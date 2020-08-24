@@ -19,7 +19,7 @@
     <br />
     <label>
       Measurement: 
-      <input type='text' if="measurement" formControlName='measurement' name='measurement' required />
+      <input type='text' id="measurement" formControlName='measurement' name='measurement' required />
     </label>
     <div *ngIf="measurement.invalid && (measurement.dirty || measurement.touched)" class="alert alert-danger">
       <div *ngIf="measurement.errors.required">
@@ -29,15 +29,15 @@
     <br />
     <label>
       Quantity on Hand:
-      <input type='number' id="quantity" formControlName='quantity' name='quantity' required />
+      <input type='number' id="quantity" formControlName='quantity' name='quantity' min="0" required />
     </label>
-    <div *ngIf="qty.invalid && (quantity.dirty || quantity.touched)" class="alert alert-danger">
+    <div *ngIf="quantity.invalid && (quantity.dirty || quantity.touched)" class="alert alert-danger">
       <div *ngIf="quantity.errors.required">
         Quantity is required.
-      </div><!--
-      <div *ngIf="quantity">
+      </div>
+      <div *ngIf="quantity.errors.minValue">
         Quantity must be 0 or greater.
-      </div>-->
+      </div>
     </div>
     <br />
     <button type='submit' [disabled]="!ingredientForm.valid">Submit</button>
