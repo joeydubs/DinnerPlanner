@@ -1,0 +1,65 @@
+<h2>Manage Ingredients</h2>
+
+<div>
+  <button (click)="newIngredient()">New Ingredient</button>
+
+  <form *ngIf="ingredientForm" [formGroup]="ingredientForm" (ngSubmit)="save()">
+    <label>
+      Ingredient Name:
+      <input type='text' id="name" formControlName='name' required />
+    </label>
+    <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
+      <div *ngIf="name.errors.required">
+        Name is required.
+      </div>
+      <div *ngIf="name.errors.minlength">
+        Name must be at least 2 characters long.
+      </div>
+    </div>
+    <br />
+    <label>
+      Measurement: 
+      <input type='text' if="measurement" formControlName='measurement' name='measurement' required />
+    </label>
+    <div *ngIf="measurement.invalid && (measurement.dirty || measurement.touched)" class="alert alert-danger">
+      <div *ngIf="measurement.errors.required">
+        Measurement is required.
+      </div>
+    </div>
+    <br />
+    <label>
+      Quantity on Hand:
+      <input type='number' id="quantity" formControlName='quantity' name='quantity' required />
+    </label>
+    <div *ngIf="qty.invalid && (quantity.dirty || quantity.touched)" class="alert alert-danger">
+      <div *ngIf="quantity.errors.required">
+        Quantity is required.
+      </div><!--
+      <div *ngIf="quantity">
+        Quantity must be 0 or greater.
+      </div>-->
+    </div>
+    <br />
+    <button type='submit' [disabled]="!ingredientForm.valid">Submit</button>
+    <button type='button' (click)='cancel()'>Cancel</button>
+  </form>
+</div>
+
+<table *ngIf="ingredients.length > 0" class="table table-striped">
+  <thead class="thead-dark">
+    <tr>
+      <th>Ingredient</th>
+      <th>On Hand</th>
+      <th>Quantity</th>
+      <th>Measurement</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let ingredient of ingredients">
+      <td>{{ ingredient.name }}</td>
+      <td>{{ ingredient.onHand }}</td>
+      <td>{{ ingredient.qty }}</td>
+      <td>{{ ingredient.measurement }}</td>
+    </tr>
+  </tbody>
+</table>
