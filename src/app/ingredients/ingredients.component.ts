@@ -33,11 +33,7 @@ export class IngredientsComponent implements OnInit {
   }
 
   newIngredient(): void {
-    this.ingredientForm = this.generateForm();
-  }
-
-  generateForm(): FormGroup {
-    return new FormGroup({
+    this.ingredientForm = new FormGroup({
       name: new FormControl('', [Validators.required, Validators.minLength(2)]),
       measurement: new FormControl('', Validators.required),
       quantity: new FormControl('', [Validators.required, this.minValueValidator(0)]),

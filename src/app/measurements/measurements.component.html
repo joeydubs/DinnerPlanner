@@ -1,1 +1,15 @@
-<p>measurements works!</p>
+<h2>Manage Measurements</h2>
+
+<div>
+    <button (click)="newMeasurement()">New Measurement</button>
+
+    <form *ngIf="measurementForm" [formGroup]="measurementForm" (onSubmit)="save()">
+        <label>
+            Measurement Name: 
+            <input type="text" formControlName="name" required>
+        </label>
+        <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
+            
+        </div>
+    </form>
+</div>
