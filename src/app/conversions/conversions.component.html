@@ -11,6 +11,19 @@
       <option *ngFor="let measurement of measurements" value="{{measurement.name}}">{{ measurement.name }}</option>
     </select>
   </label>
+  <div *ngIf="fromQty.invalid && (fromQty.touched || fromQty.dirty)" class="alert alert-danger">
+    <div *ngIf="fromQty.errors.required">
+      A quantity for Measurement 1 is required.
+    </div>
+    <div *ngIf="fromQty.errors.min">
+      Quantity for Measurement 1 cannot be less than 0.
+    </div>
+  </div>
+  <div *ngIf="fromName.invalid && (fromName.touched || fromName.dirty)" class="alert alert-danger">
+    <div *ngIf="fromName.errors.required">
+      A measurement must be selected for Measurement 1.
+    </div>
+  </div>
 
   <p>-- Is equivalent to --</p>
 
@@ -22,6 +35,20 @@
       <option *ngFor="let measurement of measurements" value="{{measurement.name}}">{{ measurement.name }}</option>
     </select>
   </label>
+  <div *ngIf="toQty.invalid && (toQty.touched || toQty.dirty)" class="alert alert-danger">
+    <div *ngIf="toQty.errors.required">
+      A quantity for Measurement 2 is required.
+    </div>
+    <div *ngIf="toQty.errors.min">
+      Quantity for Measurement 2 cannot be less than 0.
+    </div>
+  </div>
+  <div *ngIf="toName.invalid && (toName.touched || toName.dirty)" class="alert alert-danger">
+    <div *ngIf="toName.errors.required">
+      A measurement must be selected for Measurement 1.
+    </div>
+  </div>
+
   <br/>
   <button type="submit" [disabled]="!conversionForm.valid">Save</button>
   <button type="button" (click)="close()">Cancel</button>

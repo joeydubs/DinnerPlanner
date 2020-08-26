@@ -31,9 +31,8 @@ export class RecipiesComponent implements OnInit {
 
   constructor() { }
 
-  get ingredientList(): FormArray {
-    return this.recipieForm.get("ingredientList") as FormArray;
-  }
+  get name() { return this.recipieForm.get("name") };
+  get ingredientList(): FormArray { return this.recipieForm.get("ingredientList") as FormArray };
 
   ngOnInit(): void {
   }
@@ -71,15 +70,7 @@ export class RecipiesComponent implements OnInit {
       ingredients: ingredients
     })
 
-    this.recipieForm.reset({
-      name: '',
-      ingredientList: [
-        {
-          ingredient: '',
-          quantity: '0'
-        }
-      ]
-    })
+    this.clear();
   }
 
   close(): void {

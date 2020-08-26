@@ -10,7 +10,12 @@ import { MEASUREMENTS } from './measurements'
 })
 export class MeasurementsComponent implements OnInit {
 
-  measurementForm: FormGroup;
+  measurementForm: FormGroup = new FormGroup({
+    name: new FormControl('', [Validators.required, Validators.minLength(2)]),
+    abbreviation: new FormControl('', [Validators.required, Validators.minLength(2)])
+  })
+
+  showMeasurementForm = false;
 
   measurements = MEASUREMENTS;
 
@@ -23,10 +28,7 @@ export class MeasurementsComponent implements OnInit {
   get abbreviation() { return this.measurementForm.get("abbreviation") };
 
   newMeasurement(): void {
-    this.measurementForm = new FormGroup({
-      name: new FormControl('', [Validators.required, Validators.minLength(2)]),
-      abbreviation: new FormControl('', [Validators.required, Validators.minLength(2)])
-    })
+    this.showMeasurementForm = true;
   }
 
   save(): void {
@@ -35,11 +37,14 @@ export class MeasurementsComponent implements OnInit {
       abbreviation: this.measurementForm.get("abbreviation").value
     });
 
-    this.measurementForm.reset();
+    this.measurementForm.reset({
+      name: "",
+      abbreviation: ""
+    });
   }
 
   close(): void {
-    this.measurementForm = null;
+    this.showMeasurementForm = false;
   }
 
 }

@@ -3,10 +3,10 @@
 <div>
   <button (click)="newMeasurement()">New Measurement</button>
 
-  <form *ngIf="measurementForm" [formGroup]="measurementForm" (ngSubmit)="save()">
+  <form *ngIf="showMeasurementForm" [formGroup]="measurementForm" (ngSubmit)="save()">
     <label>
       Measurement Name:
-      <input type="text" formControlName="name" required>
+      <input type="text" formControlName="name" minlength="2" required>
     </label>
     <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
       <div *ngIf="name.errors.required">
@@ -19,7 +19,7 @@
     <br/>
     <label>
       Abbreviation:
-      <input type="text" formControlName="abbreviation" required>
+      <input type="text" formControlName="abbreviation" minlength="2" required>
     </label>
     <div *ngIf="abbreviation.invalid && (abbreviation.dirty || abbreviation.touched)" class="alert alert-danger">
       <div *ngIf="abbreviation.errors.required">

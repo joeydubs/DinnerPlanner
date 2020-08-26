@@ -19,9 +19,9 @@ export class ConversionsComponent implements OnInit {
   measurements = MEASUREMENTS;
 
   conversionForm = new FormGroup({
-    fromQty: new FormControl("0", [Validators.required, this.minValueValidator(0)]),
+    fromQty: new FormControl("0", [Validators.required, Validators.min(0)]),
     fromName: new FormControl("", [Validators.required]),
-    toQty: new FormControl("0", [Validators.required, this.minValueValidator(0)]),
+    toQty: new FormControl("0", [Validators.required, Validators.min(0)]),
     toName: new FormControl("", [Validators.required])
   });
 
@@ -31,6 +31,11 @@ export class ConversionsComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+  get fromQty() { return this.conversionForm.get("fromQty") }
+  get fromName() { return this.conversionForm.get("fromName") }
+  get toQty() { return this.conversionForm.get("toQty") }
+  get toName() { return this.conversionForm.get("toName") }
 
   minValueValidator(min: number): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {

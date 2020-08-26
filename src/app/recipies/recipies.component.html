@@ -6,6 +6,11 @@
     Recipie Name:
     <input type="text" formControlName="name" required>
   </label>
+  <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
+    <div *ngIf="name.errors.required">
+      Recipie name is required.
+    </div>
+  </div>
   <br />
   <div formArrayName="ingredientList">
     <label>
@@ -13,21 +18,41 @@
       <div *ngFor="let _ of ingredientList.controls; let i=index">
         <div [formGroupName]="i">
           <input type="number" formControlName="quantity" min="0" required>
-          <select formControlName="measurement">
+          <select formControlName="measurement" required>
             <option value="" disabled>-- Select --</option>
             <option *ngFor="let measurement of measurements" value="{{measurement.name}}">{{ measurement.name }}</option>
           </select>
-          <select formControlName="ingredient">
+          <select formControlName="ingredient" required>
             <option value="" disabled>-- Select --</option>
             <option *ngFor="let ingredient of ingredients" value="{{ingredient.name}}">{{ ingredient.name }}</option>
           </select>
+          <!-- Validation needs to be fixed. Cannot currently validate measurement and ingredient because it is nested in an array so a getter is not defined.
+          <div *ngIf="quantity.invalid && (quantity.dirty || quantity.touched)" class="alert alert-danger">
+            <div *ngIf="quantity.errors.required">
+              Ingredient quantity is required.
+            </div>
+            <div *ngIf="quantity.errors.min">
+              Ingredient quantity cannot be less than 0.
+            </div>
+          </div>        
+          <div *ngIf="measurement.invalid && (measurement.dirty || measurement.touched)" class="alert alert-danger">
+            <div *ngIf="measurement.errors.required">
+              Ingredient measurement is required.
+            </div>
+          </div>        
+          <div *ngIf="ingredient.invalid && (ingredient.dirty || ingredient.touched)" class="alert alert-danger">
+            <div *ngIf="ingredient.errors.required">
+              Ingredient is required.
+            </div>
+          </div>
+          -->
         </div>
       </div>
     </label>
     <br/>
     <button type="button" (click)="addIngredient()">Add ingredient</button>
     <br/>
-    <button type="submit">Save</button>
+    <button type="submit" [disabled]="!recipieForm.valid">Save</button>
     <button type="button" (click)="close()">Cancel</button>
     <button type="button" (click)="clear()">Clear</button>
   </div>
