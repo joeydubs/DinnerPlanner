@@ -1,11 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
-export const measurements: { name: string, abbreviation: string }[] = [
-  { name: "Tablespoon", abbreviation: "tbsp" },
-  { name: "Teaspoon", abbreviation: "tsp" },
-  { name: "Cup", abbreviation: "cup" }
-];
+import { MEASUREMENTS } from './measurements'
 
 @Component({
   selector: 'app-measurements',
@@ -16,7 +12,7 @@ export class MeasurementsComponent implements OnInit {
 
   measurementForm: FormGroup;
 
-  measurements = measurements;
+  measurements = MEASUREMENTS;
 
   constructor() { }
 

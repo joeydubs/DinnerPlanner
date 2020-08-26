@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControlOptions, AbstractControl } from '@angular/forms';
-import { measurements } from '../measurements/measurements.component';
+
+import { MEASUREMENTS } from '../measurements/measurements';
+import { INGREDIENTS } from './ingredients'
 
 @Component({
   selector: 'app-ingredients',
@@ -17,13 +19,9 @@ export class IngredientsComponent implements OnInit {
 
   showIngredientForm = false;
 
-  ingredients: { name: string, measurement: string, onHand: boolean, qty: number }[] = [
-    { name: "Flour", measurement: "Pound", onHand: true, qty: 4 },
-    { name: "Eggs", measurement: "Dozen", onHand: false, qty: 0 },
-    { name: "Milk", measurement: "Gallon", onHand: true, qty: 1 }
-  ];
+  ingredients= INGREDIENTS;
 
-  measurements = measurements;
+  measurements = MEASUREMENTS;
 
   constructor() { }
 

@@ -1,1 +1,49 @@
-<p>recipies works!</p>
+<h2>Manage Recipies</h2>
+
+<button (click)="newRecipie()">Add Recipie</button>
+<form *ngIf="showRecipieForm" [formGroup]="recipieForm" (ngSubmit)="save()">
+  <label>
+    Recipie Name:
+    <input type="text" formControlName="name" required>
+  </label>
+  <br />
+  <div formArrayName="ingredientList">
+    <label>
+      Ingredients:
+      <div *ngFor="let _ of ingredientList.controls; let i=index">
+        <div [formGroupName]="i">
+          <input type="number" formControlName="quantity" min="0" required>
+          <select formControlName="measurement">
+            <option value="" disabled>-- Select --</option>
+            <option *ngFor="let measurement of measurements" value="{{measurement.name}}">{{ measurement.name }}</option>
+          </select>
+          <select formControlName="ingredient">
+            <option value="" disabled>-- Select --</option>
+            <option *ngFor="let ingredient of ingredients" value="{{ingredient.name}}">{{ ingredient.name }}</option>
+          </select>
+        </div>
+      </div>
+    </label>
+    <br/>
+    <button type="button" (click)="addIngredient()">Add ingredient</button>
+    <br/>
+    <button type="submit">Save</button>
+    <button type="button" (click)="close()">Cancel</button>
+    <button type="button" (click)="clear()">Clear</button>
+  </div>
+</form>
+
+<table *ngIf="recipies.length > 0" class="table table-striped">
+  <thead class="thead-dark">
+    <tr>
+      <th>Recipie</th>
+      <th>Ingredients</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let recipie of recipies">
+      <td>{{ recipie.name }}</td>
+      <td>{{ printRecipie(recipie) }}</td>
+    </tr>
+  </tbody>
+</table>

@@ -1,1 +1,43 @@
-<p>conversions works!</p>
+<h2>Manage Conversions</h2>
+
+<button (click)="newConversion()">Add Conversion</button>
+
+<form *ngIf="showConversionForm" [formGroup]="conversionForm" (ngSubmit)="save()">
+  <label>
+    Measurement 1: 
+    <input type="integer" formControlName="fromQty" min="0" required>
+    <select formControlName="fromName" required>
+      <option value="" disabled>-- Select --</option>
+      <option *ngFor="let measurement of measurements" value="{{measurement.name}}">{{ measurement.name }}</option>
+    </select>
+  </label>
+
+  <p>-- Is equivalent to --</p>
+
+  <label>
+    Measurement 2:
+    <input type="integer" formControlName="toQty" min="0" required>
+    <select formControlName="toName" required>
+      <option value="" disabled>-- Select --</option>
+      <option *ngFor="let measurement of measurements" value="{{measurement.name}}">{{ measurement.name }}</option>
+    </select>
+  </label>
+  <br/>
+  <button type="submit" [disabled]="!conversionForm.valid">Save</button>
+  <button type="button" (click)="close()">Cancel</button>
+</form>
+
+<table *ngIf="conversions.length > 0" class="table table-striped">
+  <thead class="thead-dark">
+    <tr>
+      <th>Measurement</th>
+      <th>Equals</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let conversion of conversions">
+      <td>{{ conversion.fromQty }} {{ conversion.fromName }}</td>
+      <td>{{ conversion.toQty }} {{ conversion.toName }}</td>
+    </tr>
+  </tbody>
+</table>
