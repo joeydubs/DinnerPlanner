@@ -33,6 +33,9 @@ export class RecipiesComponent implements OnInit {
 
   get name() { return this.recipieForm.get("name") };
   get ingredientList(): FormArray { return this.recipieForm.get("ingredientList") as FormArray };
+  quantity(i: number) { return this.ingredientList.controls[i].get("quantity") }
+  measurement(i: number) { return this.ingredientList.controls[i].get("measurement") }
+  ingredient(i: number) { return this.ingredientList.controls[i].get("ingredient") }
 
   ngOnInit(): void {
   }

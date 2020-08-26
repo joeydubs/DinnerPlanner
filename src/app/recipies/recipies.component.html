@@ -26,26 +26,24 @@
             <option value="" disabled>-- Select --</option>
             <option *ngFor="let ingredient of ingredients" value="{{ingredient.name}}">{{ ingredient.name }}</option>
           </select>
-          <!-- Validation needs to be fixed. Cannot currently validate measurement and ingredient because it is nested in an array so a getter is not defined.
-          <div *ngIf="quantity.invalid && (quantity.dirty || quantity.touched)" class="alert alert-danger">
-            <div *ngIf="quantity.errors.required">
+          <div *ngIf="quantity(i).invalid && (quantity(i).dirty || quantity(i).touched)" class="alert alert-danger">
+            <div *ngIf="quantity(i).errors.required">
               Ingredient quantity is required.
             </div>
-            <div *ngIf="quantity.errors.min">
+            <div *ngIf="quantity(i).errors.min">
               Ingredient quantity cannot be less than 0.
             </div>
           </div>        
-          <div *ngIf="measurement.invalid && (measurement.dirty || measurement.touched)" class="alert alert-danger">
-            <div *ngIf="measurement.errors.required">
+          <div *ngIf="measurement(i).invalid && (measurement(i).dirty || measurement(i).touched)" class="alert alert-danger">
+            <div *ngIf="measurement(i).errors.required">
               Ingredient measurement is required.
             </div>
           </div>        
-          <div *ngIf="ingredient.invalid && (ingredient.dirty || ingredient.touched)" class="alert alert-danger">
-            <div *ngIf="ingredient.errors.required">
+          <div *ngIf="ingredient(i).invalid && (ingredient(i).dirty || ingredient(i).touched)" class="alert alert-danger">
+            <div *ngIf="ingredient(i).errors.required">
               Ingredient is required.
             </div>
           </div>
-          -->
         </div>
       </div>
     </label>
