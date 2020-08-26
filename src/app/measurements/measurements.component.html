@@ -1,15 +1,51 @@
 <h2>Manage Measurements</h2>
 
 <div>
-    <button (click)="newMeasurement()">New Measurement</button>
+  <button (click)="newMeasurement()">New Measurement</button>
 
-    <form *ngIf="measurementForm" [formGroup]="measurementForm" (onSubmit)="save()">
-        <label>
-            Measurement Name: 
-            <input type="text" formControlName="name" required>
-        </label>
-        <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
-            
-        </div>
-    </form>
+  <form *ngIf="measurementForm" [formGroup]="measurementForm" (ngSubmit)="save()">
+    <label>
+      Measurement Name:
+      <input type="text" formControlName="name" required>
+    </label>
+    <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
+      <div *ngIf="name.errors.required">
+        Ingredient name is requires.
+      </div>
+      <div *ngIf="name.errors.minlength">
+        Ingredient name must be at least 2 characters long.
+      </div>
+    </div>
+    <br/>
+    <label>
+      Abbreviation:
+      <input type="text" formControlName="abbreviation" required>
+    </label>
+    <div *ngIf="abbreviation.invalid && (abbreviation.dirty || abbreviation.touched)" class="alert alert-danger">
+      <div *ngIf="abbreviation.errors.required">
+        Abbreviation is required.
+      </div>
+      <div *ngIf="abbreviation.errors.minlength">
+        Abbreviation must be at least 2 characters long.
+      </div>
+    </div>
+    <br/>
+    <button type="submit" [disabled]="!measurementForm.valid">Save</button>
+    <button type="button" (click)="close()">Cancel</button>
+  </form>
 </div>
+
+<table *ngIf="measurements.length > 0" class="table table-striped">
+  <thead class="thead-dark">
+    <tr>
+      <th>Ingredient</th>
+      <th>Abbreviation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let measurement of measurements">
+      <td> {{ measurement.name }}</td>
+      <td> {{ measurement.abbreviation }}</td>
+    </tr>
+  </tbody>
+</table>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControlOptions, AbstractControl } from '@angular/forms';
+import { measurements } from '../measurements/measurements.component';
 
 @Component({
   selector: 'app-ingredients',
@@ -8,13 +9,21 @@ import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControlOptions
 })
 export class IngredientsComponent implements OnInit {
 
-  ingredientForm: FormGroup;
+  ingredientForm = new FormGroup({
+    name: new FormControl('', [Validators.required, Validators.minLength(2)]),
+    measurement: new FormControl('', [Validators.required]),
+    quantity: new FormControl('0', [Validators.required, this.minValueValidator(0)]),
+  });
+
+  showIngredientForm = false;
 
   ingredients: { name: string, measurement: string, onHand: boolean, qty: number }[] = [
     { name: "Flour", measurement: "Pound", onHand: true, qty: 4 },
     { name: "Eggs", measurement: "Dozen", onHand: false, qty: 0 },
     { name: "Milk", measurement: "Gallon", onHand: true, qty: 1 }
   ];
+
+  measurements = measurements;
 
   constructor() { }
 
@@ -33,11 +42,7 @@ export class IngredientsComponent implements OnInit {
   }
 
   newIngredient(): void {
-    this.ingredientForm = new FormGroup({
-      name: new FormControl('', [Validators.required, Validators.minLength(2)]),
-      measurement: new FormControl('', Validators.required),
-      quantity: new FormControl('', [Validators.required, this.minValueValidator(0)]),
-    });
+    this.showIngredientForm = true;
   }
 
   save(): void {
@@ -45,15 +50,19 @@ export class IngredientsComponent implements OnInit {
       {
         name: this.ingredientForm.get("name").value,
         measurement: this.ingredientForm.get("measurement").value,
-        onHand: this.ingredientForm.get("measurement").value > 0,
+        onHand: this.ingredientForm.get("quantity").value > 0,
         qty: this.ingredientForm.get("quantity").value
       }
     );
 
-    this.ingredientForm.reset();
+    this.ingredientForm.reset({
+      name: '',
+      measurement: '',
+      quantity: '0',
+    });
   }
 
   cancel(): void {
-    this.ingredientForm = null;
+    this.showIngredientForm = false;
   }
 }

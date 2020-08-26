@@ -3,7 +3,7 @@
 <div>
   <button (click)="newIngredient()">New Ingredient</button>
 
-  <form *ngIf="ingredientForm" [formGroup]="ingredientForm" (ngSubmit)="save()">
+  <form *ngIf="showIngredientForm" [formGroup]="ingredientForm" (ngSubmit)="save()">
     <label>
       Ingredient Name:
       <input type='text' id="name" formControlName='name' required />
@@ -19,7 +19,10 @@
     <br />
     <label>
       Measurement: 
-      <input type='text' id="measurement" formControlName='measurement' name='measurement' required />
+      <select formControlName="measurement" required>
+        <option value="" disabled>-- Select --</option>
+        <option *ngFor="let measurement of measurements" value="{{measurement.name}}">{{ measurement.name }}</option>
+      </select>
     </label>
     <div *ngIf="measurement.invalid && (measurement.dirty || measurement.touched)" class="alert alert-danger">
       <div *ngIf="measurement.errors.required">
@@ -40,7 +43,7 @@
       </div>
     </div>
     <br />
-    <button type='submit' [disabled]="!ingredientForm.valid">Submit</button>
+    <button type='submit' [disabled]="!ingredientForm.valid">Save</button>
     <button type='button' (click)='cancel()'>Cancel</button>
   </form>
 </div>
