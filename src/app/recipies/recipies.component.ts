@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Recipie, RECIPIES } from './recipies'
-import { INGREDIENTS } from '../ingredients/ingredients'
+import { IRecipie } from './recipies'
+import { IIngredient } from '../ingredients/ingredients'
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
-import { MEASUREMENTS } from '../measurements/measurements';
+import { IMeasurement } from '../measurements/measurements';
 
 @Component({
   selector: 'app-recipies',
@@ -12,9 +12,9 @@ import { MEASUREMENTS } from '../measurements/measurements';
 })
 export class RecipiesComponent implements OnInit {
 
-  recipies = RECIPIES;
-  ingredients = INGREDIENTS;
-  measurements = MEASUREMENTS;
+  recipies: IRecipie[];
+  ingredients: IIngredient[];
+  measurements: IMeasurement[];
 
   recipieForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(2)]),
@@ -68,10 +68,10 @@ export class RecipiesComponent implements OnInit {
       })
     }
 
-    RECIPIES.push({
-      name: this.recipieForm.get("name").value,
-      ingredients: ingredients
-    })
+    // this.recipies.push({
+    //   name: this.recipieForm.get("name").value,
+    //   ingredients: ingredients
+    // });
 
     this.clear();
   }
@@ -101,7 +101,7 @@ export class RecipiesComponent implements OnInit {
     })
   }
 
-  printRecipie(recipie: Recipie): string {
+  printRecipie(recipie: IRecipie): string {
     let recipieString = "";
     let index = 1
 

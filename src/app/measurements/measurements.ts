@@ -1,10 +1,5 @@
-export interface Measurement {
+export interface IMeasurement {
+  id: number,
   name: string,
-  abbreviation: string
+  abbr: string
 }
-
-export const MEASUREMENTS: Measurement[] = [
-  { name: "Tablespoon", abbreviation: "tbsp" },
-  { name: "Teaspoon", abbreviation: "tsp" },
-  { name: "Cup", abbreviation: "cup" }
-];

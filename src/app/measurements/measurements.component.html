@@ -38,14 +38,16 @@
 <table *ngIf="measurements.length > 0" class="table table-striped">
   <thead class="thead-dark">
     <tr>
+      <th>ID</th>
       <th>Ingredient</th>
       <th>Abbreviation</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let measurement of measurements">
+      <td> {{ measurement.id }}</td>
       <td> {{ measurement.name }}</td>
-      <td> {{ measurement.abbreviation }}</td>
+      <td> {{ measurement.abbr }}</td>
     </tr>
   </tbody>
 </table>

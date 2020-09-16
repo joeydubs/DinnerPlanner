@@ -10,6 +10,7 @@ import { RecipiesComponent } from './recipies/recipies.component';
 import { IngredientsComponent } from './ingredients/ingredients.component';
 import { MeasurementsComponent } from './measurements/measurements.component';
 import { ConversionsComponent } from './conversions/conversions.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { ConversionsComponent } from './conversions/conversions.component';
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
+    HttpClientModule,
     NgbModule,
     AppRoutingModule,
   ],

@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
+import { PantryService } from '../pantry.service';
 
-import { MEASUREMENTS } from '../measurements/measurements';
+import { IMeasurement } from '../measurements/measurements';
+import { IConversion } from './conversions';
 
 @Component({
   selector: 'app-conversions',
@@ -10,13 +12,8 @@ import { MEASUREMENTS } from '../measurements/measurements';
 })
 export class ConversionsComponent implements OnInit {
 
-  conversions = [
-    { fromQty: 3, fromName: "Teaspoon", toQty: 1, toName: "Tablespoon" },
-    { fromQty: 48, fromName: "Teaspoon", toQty: 1, toName: "Cup" },
-    { fromQty: 16, fromName: "Tablespoon", toQty: 1, toName: "Cup" }
-  ];
-
-  measurements = MEASUREMENTS;
+  conversions: IConversion[] = [];
+  measurements: IMeasurement[] = [];
 
   conversionForm = new FormGroup({
     fromQty: new FormControl("0", [Validators.required, Validators.min(0)]),
@@ -27,9 +24,17 @@ export class ConversionsComponent implements OnInit {
 
   showConversionForm = false;
 
-  constructor() { }
+  constructor(private pantryService: PantryService) { }
 
   ngOnInit(): void {
+    this.pantryService.getAllConversions().subscribe(
+      (response) => {
+        this.conversions = response;
+      },
+      (error) => {
+        console.log(error);
+      }
+    )
   }
 
   get fromQty() { return this.conversionForm.get("fromQty") }
@@ -49,12 +54,12 @@ export class ConversionsComponent implements OnInit {
   }
 
   save(): void {
-    this.conversions.push({
-      fromQty: this.conversionForm.get("fromQty").value,
-      fromName: this.conversionForm.get("fromName").value,
-      toQty: this.conversionForm.get("toQty").value,
-      toName: this.conversionForm.get("toName").value
-    })
+    // this.conversions.push({
+    //   fromQty: this.conversionForm.get("fromQty").value,
+    //   fromName: this.conversionForm.get("fromName").value,
+    //   toQty: this.conversionForm.get("toQty").value,
+    //   toName: this.conversionForm.get("toName").value
+    // })
 
     this.conversionForm.reset({
       fromQty: "0",

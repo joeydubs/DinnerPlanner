@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { PantryService } from '../pantry.service'
 
-import { MEASUREMENTS } from './measurements'
+import { IMeasurement } from './measurements';
 
 @Component({
   selector: 'app-measurements',
@@ -17,11 +18,19 @@ export class MeasurementsComponent implements OnInit {
 
   showMeasurementForm = false;
 
-  measurements = MEASUREMENTS;
+  measurements: IMeasurement[] = [];
 
-  constructor() { }
+  constructor(private pantryService: PantryService) { }
 
   ngOnInit(): void {
+    this.pantryService.getAllMeasurements().subscribe(
+      (response) => {
+        this.measurements = response;
+      },
+      (error) => {
+        console.log(error);
+      }
+    )
   }
 
   get name() { return this.measurementForm.get("name") };
@@ -32,10 +41,12 @@ export class MeasurementsComponent implements OnInit {
   }
 
   save(): void {
-    this.measurements.push({
+    let newMeas: IMeasurement = {
+      id: null,
       name: this.measurementForm.get("name").value,
-      abbreviation: this.measurementForm.get("abbreviation").value
-    });
+      abbr: this.measurementForm.get("abbreviation").value
+    }
+    this.measurements.push(newMeas);
 
     this.measurementForm.reset({
       name: "",

@@ -57,14 +57,20 @@
 <table *ngIf="conversions.length > 0" class="table table-striped">
   <thead class="thead-dark">
     <tr>
-      <th>Measurement</th>
-      <th>Equals</th>
+      <th>ID</th>
+      <th>Measurement One</th>
+      <th>Measurement Two</th>
+      <th>Is Generic</th>
+      <th>Ingredient Id</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let conversion of conversions">
-      <td>{{ conversion.fromQty }} {{ conversion.fromName }}</td>
-      <td>{{ conversion.toQty }} {{ conversion.toName }}</td>
+      <td>{{ conversion.id }}</td>
+      <td>{{ conversion.measOneQty }} {{ conversion.measOneName }}</td>
+      <td>{{ conversion.measTwoQty }} {{ conversion.measTwoName }}</td>
+      <td>{{ conversion.isGeneric }}</td>
+      <td>{{ conversion.ingredientId }}</td>
     </tr>
   </tbody>
 </table>
