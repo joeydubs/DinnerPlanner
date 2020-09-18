@@ -1,12 +1,12 @@
-export interface IRecipie {
+export interface IRecipe {
   id: number,
   name: string,
-  ingredients: IRecipieIngredient[],
+  ingredients: IRecipeIngredient[],
   directions: string,
   canMake: boolean
 }
 
-export interface IRecipieIngredient {
+export interface IRecipeIngredient {
   ingredient: string,
   measurement: string,
   quantity: number

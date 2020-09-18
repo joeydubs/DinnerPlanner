@@ -1,14 +1,14 @@
-<h2>Manage Recipies</h2>
+<h2>Manage Recipes</h2>
 
-<button (click)="newRecipie()">Add Recipie</button>
-<form *ngIf="showRecipieForm" [formGroup]="recipieForm" (ngSubmit)="save()">
+<button (click)="newRecipe()">Add Recipe</button>
+<form *ngIf="showRecipeForm" [formGroup]="recipeForm" (ngSubmit)="save()">
   <label>
-    Recipie Name:
+    Recipe Name:
     <input type="text" formControlName="name" required>
   </label>
   <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
     <div *ngIf="name.errors.required">
-      Recipie name is required.
+      Recipe name is required.
     </div>
   </div>
   <br />
@@ -50,23 +50,29 @@
     <br/>
     <button type="button" (click)="addIngredient()">Add ingredient</button>
     <br/>
-    <button type="submit" [disabled]="!recipieForm.valid">Save</button>
+    <button type="submit" [disabled]="!recipeForm.valid">Save</button>
     <button type="button" (click)="close()">Cancel</button>
     <button type="button" (click)="clear()">Clear</button>
   </div>
 </form>
 
-<table *ngIf="recipies.length > 0" class="table table-striped">
+<table *ngIf="recipes.length > 0" class="table table-striped">
   <thead class="thead-dark">
     <tr>
-      <th>Recipie</th>
+      <th>ID</th>
+      <th>Recipe</th>
       <th>Ingredients</th>
+      <th>Directions</th>
+      <th>Can Make</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let recipie of recipies">
-      <td>{{ recipie.name }}</td>
-      <td>{{ printRecipie(recipie) }}</td>
+    <tr *ngFor="let recipe of recipes">
+      <td>{{ recipe.id }}</td>
+      <td>{{ recipe.name }}</td>
+      <td>{{ printRecipe(recipe) }}</td>
+      <td>{{ recipe.directions }}</td>
+      <td>{{ recipe.canMake }}</td>
     </tr>
   </tbody>
 </table>

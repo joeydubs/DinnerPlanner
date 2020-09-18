@@ -1,29 +1,36 @@
 import { Injectable } from '@angular/core';
-<<<<<<< HEAD
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { IMeasurement } from './measurements/measurements';
 import { IConversion } from './conversions/conversions';
-=======
->>>>>>> 0fa596cdba23c9901e5baed4b3d3546c95d32a60
+import { IIngredient } from './ingredients/ingredients';
+import { IRecipe, IRecipeIngredient } from './recipes/recipes';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PantryService {
 
-<<<<<<< HEAD
   constructor(private http: HttpClient) { }
 
   getAllMeasurements(): Observable<IMeasurement[]> {
-    return this.http.get<IMeasurement[]>("/api/getAllMeasurements");
+    return this.http.get<IMeasurement[]>("http://ngpantry.duckdns.org/api/getAllMeasurements");
   }
 
   getAllConversions(): Observable<IConversion[]> {
-    return this.http.get<IConversion[]>("/api/getAllConversions");
+    return this.http.get<IConversion[]>("http://ngpantry.duckdns.org/api/getAllConversions");
   }
-=======
-  constructor() { }
->>>>>>> 0fa596cdba23c9901e5baed4b3d3546c95d32a60
+
+  getAllIngredients(): Observable<IIngredient[]> {
+    return this.http.get<IIngredient[]>("http://ngpantry.duckdns.org/api/getAllIngredients");
+  }
+
+  getAllRecipes(): Observable<IRecipe[]> {
+    return this.http.get<IRecipe[]>("http://ngpantry.duckdns.org/api/getAllRecipes");
+  }
+
+  getRecipeIngredients(recipeId: number): Observable<IRecipeIngredient[]> {
+    return this.http.get<IRecipeIngredient[]>("http://ngpantry.duckdns.org/api/getRecipeIngredient", { "params": { "recipeId": String(recipeId) } });
+  }
 }

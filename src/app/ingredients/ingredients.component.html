@@ -51,18 +51,16 @@
 <table *ngIf="ingredients.length > 0" class="table table-striped">
   <thead class="thead-dark">
     <tr>
-      <th>Ingredient</th>
-      <th>On Hand</th>
-      <th>Quantity</th>
-      <th>Measurement</th>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Default Measurement</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let ingredient of ingredients">
+      <td>{{ ingredient.id }}</td>
       <td>{{ ingredient.name }}</td>
-      <td>{{ ingredient.onHand }}</td>
-      <td>{{ ingredient.qty }}</td>
-      <td>{{ ingredient.measurement }}</td>
+      <td>{{ ingredient.defaultMeasurement }}</td>
     </tr>
   </tbody>
 </table>

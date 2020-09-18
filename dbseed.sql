@@ -80,14 +80,14 @@ VALUES
 
 
 
--- RECIPIES SEED DATA --
+-- recipeS SEED DATA --
 
-INSERT INTO recipies
+INSERT INTO recipes
   (name, directions, canMake)
 VALUES
   ("Chili", "Mix it up in a pot.", true);
 
-INSERT INTO recipies
+INSERT INTO recipes
   (name, directions, canMake)
 VALUES
   ("Scrambled Eggs", "Whisk and fry.", true);
@@ -95,20 +95,20 @@ VALUES
 
 
 
--- RECIPIE_INGREDIENTS SEED DATA --
+-- recipe_INGREDIENTS SEED DATA --
 
-INSERT INTO recipie_ingredients
-  (recipieId, ingredientId, measurementId, quantity)
+INSERT INTO recipe_ingredients
+  (recipeId, ingredientId, measurementId, quantity)
 VALUES
   (1, 1, 2, 3);
 
-INSERT INTO recipie_ingredients
-  (recipieId, ingredientId, measurementId, quantity)
+INSERT INTO recipe_ingredients
+  (recipeId, ingredientId, measurementId, quantity)
 VALUES
   (1, 2, 6, 1);
 
-INSERT INTO recipie_ingredients
-  (recipieId, ingredientId, measurementId, quantity)
+INSERT INTO recipe_ingredients
+  (recipeId, ingredientId, measurementId, quantity)
 VALUES
   (2, 2, 6, 2);
 

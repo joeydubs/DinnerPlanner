@@ -1,14 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-<<<<<<< HEAD
 import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControlOptions, AbstractControl } from '@angular/forms';
+
 import { IIngredient } from './ingredients';
 import { IMeasurement } from '../measurements/measurements';
-=======
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-
-import { MEASUREMENTS } from '../measurements/measurements';
-import { INGREDIENTS } from './ingredients'
->>>>>>> 0fa596cdba23c9901e5baed4b3d3546c95d32a60
+import { PantryService } from '../pantry.service';
 
 @Component({
   selector: 'app-ingredients',
@@ -25,17 +20,20 @@ export class IngredientsComponent implements OnInit {
 
   showIngredientForm = false;
 
-<<<<<<< HEAD
-  ingredients: IIngredient[];
-  measurements: IMeasurement[];
-=======
-  ingredients= INGREDIENTS;
-  measurements = MEASUREMENTS;
->>>>>>> 0fa596cdba23c9901e5baed4b3d3546c95d32a60
+  ingredients: IIngredient[] = [];
+  measurements: IMeasurement[] = [];
 
-  constructor() { }
+  constructor(private pantryService: PantryService) { }
 
   ngOnInit(): void {
+    this.pantryService.getAllIngredients().subscribe(
+      (response) => {
+        this.ingredients = response;
+      },
+      (error) => {
+        console.log(error);
+      }
+    )
   }
 
   get name() { return this.ingredientForm.get("name") };

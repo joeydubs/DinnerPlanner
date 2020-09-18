@@ -6,7 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PantryComponent } from './pantry/pantry.component';
-import { RecipiesComponent } from './recipies/recipies.component';
+import { RecipesComponent } from './recipes/recipes.component';
 import { IngredientsComponent } from './ingredients/ingredients.component';
 import { MeasurementsComponent } from './measurements/measurements.component';
 import { ConversionsComponent } from './conversions/conversions.component';
@@ -16,7 +16,7 @@ import { HttpClientModule } from '@angular/common/http';
   declarations: [
     AppComponent,
     PantryComponent,
-    RecipiesComponent,
+    RecipesComponent,
     IngredientsComponent,
     MeasurementsComponent,
     ConversionsComponent

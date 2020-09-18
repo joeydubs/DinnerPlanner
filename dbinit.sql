@@ -1,7 +1,7 @@
 USE dinnerplanner;
 
-DROP TABLE IF EXISTS recipie_ingredients;
-DROP TABLE IF EXISTS recipies;
+DROP TABLE IF EXISTS recipe_ingredients;
+DROP TABLE IF EXISTS recipes;
 DROP TABLE IF EXISTS conversions;
 DROP TABLE IF EXISTS pantry;
 DROP TABLE IF EXISTS ingredients;
@@ -42,7 +42,7 @@ CREATE TABLE pantry (
   FOREIGN KEY (ingredientId) REFERENCES ingredients(id)
 );
 
-CREATE TABLE recipies (
+CREATE TABLE recipes (
   id INTEGER AUTO_INCREMENT,
   name VARCHAR(100),
   directions VARCHAR(2000),
@@ -50,13 +50,13 @@ CREATE TABLE recipies (
   PRIMARY KEY(id)
 );
 
-CREATE TABLE recipie_ingredients (
-  recipieId INTEGER,
+CREATE TABLE recipe_ingredients (
+  recipeId INTEGER,
   ingredientId INTEGER,
   measurementId INTEGER NOT NULL,
   quantity DOUBLE, 
-  PRIMARY KEY(recipieId, ingredientId),
-  FOREIGN KEY (recipieId) REFERENCES recipies(id),
+  PRIMARY KEY(recipeId, ingredientId),
+  FOREIGN KEY (recipeId) REFERENCES recipes(id),
   FOREIGN KEY (ingredientId) REFERENCES ingredients(id),
   FOREIGN KEY (measurementId) REFERENCES measurements(id)
 );
