@@ -31,6 +31,6 @@ export class PantryService {
   }
 
   getRecipeIngredients(recipeId: number): Observable<IRecipeIngredient[]> {
-    return this.http.get<IRecipeIngredient[]>("http://ngpantry.duckdns.org/api/getRecipeIngredient", { "params": { "recipeId": String(recipeId) } });
+    return this.http.get<IRecipeIngredient[]>("http://ngpantry.duckdns.org/api/getRecipeIngredients", { "params": { "recipeId": String(recipeId) } });
   }
 }

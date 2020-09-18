@@ -46,7 +46,7 @@ export class RecipesComponent implements OnInit {
         console.log(allRecipes);
         this.recipes = allRecipes;
 
-        for (const recipe of this.recipes) {
+        for (const recipe of allRecipes) {
           this.pantryService.getRecipeIngredients(recipe.id).subscribe(
             (recipeIngredients) => {
               recipe.ingredients = recipeIngredients;
@@ -128,17 +128,21 @@ export class RecipesComponent implements OnInit {
     let recipeString = "";
     let index = 1
 
-    for (let ingredient of recipe.ingredients) {
-      recipeString += ingredient.quantity + " " + ingredient.measurement + " " + ingredient.ingredient;
+    if (!recipe.ingredients || recipe.ingredients.length === 0) {
+      return "";
+    }
+    else {
+      for (let ingredient of recipe.ingredients) {
+        recipeString += ingredient.quantity + " " + ingredient.measurement + " " + ingredient.ingredient;
 
-      if (index < recipe.ingredients.length) {
-        recipeString += ", ";
+        if (index < recipe.ingredients.length) {
+          recipeString += ", ";
+        }
+
+        index++;
       }
 
-      index ++;
+      return recipeString;
     }
-
-    return recipeString;
   }
-
 }

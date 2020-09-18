@@ -81,7 +81,7 @@ app.get('/getAllRecipes', async function (req, res) {
 app.get('/getRecipeIngredients', async function (req, res) {
   res.setHeader("ContentType", "application/json");
 
-  let recipeId = req.params.recipeId;
+  let recipeId = req.query.recipeId;
   let ingredients = await pool.query(
     `
     SELECT i.name AS ingredient, m.name AS measurement, ri.quantity
@@ -89,7 +89,8 @@ app.get('/getRecipeIngredients', async function (req, res) {
     INNER JOIN ingredients AS i ON ri.ingredientId = i.id
     INNER JOIN measurements AS m ON ri.measurementId = m.id
     WHERE recipeId = ?
-    `
+    `,
+    [ recipeId ]
   );
 
   res.status(200);

@@ -8,7 +8,7 @@ import { ConversionsComponent } from './conversions/conversions.component';
 
 const routes: Routes = [
   { path: 'pantry', component: PantryComponent },
-  { path: 'managerecipes', component: RecipesComponent },
+  { path: 'manageRecipes', component: RecipesComponent },
   { path: 'manageIngredients', component: IngredientsComponent },
   { path: 'manageMeasurements', component: MeasurementsComponent },
   { path: 'manageConversions', component: ConversionsComponent },
