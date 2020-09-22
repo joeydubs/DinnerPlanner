@@ -16,7 +16,7 @@
     <label>
       Ingredients:
       <div *ngFor="let _ of ingredientList.controls; let i=index">
-        <div [formGroupName]="i">
+        <div [formGroupName]="i" >
           <input type="number" formControlName="quantity" min="0" required>
           <select formControlName="measurement" required>
             <option value="" disabled>-- Select --</option>
@@ -46,6 +46,7 @@
               Ingredient is required.
             </div>
           </div>
+          <button type="button" (click)="removeIngredient(i)">Remove</button>
         </div>
       </div>
     </label>

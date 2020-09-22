@@ -98,6 +98,11 @@ export class RecipesComponent implements OnInit {
     )
   }
 
+  removeIngredient(i: number): void {
+    this.ingredientList.removeAt(i);
+    console.log(this.ingredientList);
+  }
+
   save(): void {
     let recipeIngredients: IRecipeIngredient[] = []
 
