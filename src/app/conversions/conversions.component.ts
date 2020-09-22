@@ -72,8 +72,6 @@ export class ConversionsComponent implements OnInit {
       measTwo: this.conversionForm.get("toName").value
     }
 
-    console.log(JSON.stringify(newConversion));
-
     this.pantryService.saveConversion(newConversion).subscribe(
       (conversion) => {
         this.showSaveError = false;

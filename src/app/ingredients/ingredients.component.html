@@ -18,10 +18,10 @@
     </div>
     <br />
     <label>
-      Measurement: 
+      Measurement:
       <select formControlName="measurement" required>
         <option value="" disabled>-- Select --</option>
-        <option *ngFor="let measurement of measurements" value="{{measurement.name}}">{{ measurement.name }}</option>
+        <option *ngFor="let measurement of measurements" [ngValue]="measurement">{{ measurement.name }}</option>
       </select>
     </label>
     <div *ngIf="measurement.invalid && (measurement.dirty || measurement.touched)" class="alert alert-danger">
@@ -30,21 +30,11 @@
       </div>
     </div>
     <br />
-    <label>
-      Quantity on Hand:
-      <input type='number' id="quantity" formControlName='quantity' name='quantity' min="0" required />
-    </label>
-    <div *ngIf="quantity.invalid && (quantity.dirty || quantity.touched)" class="alert alert-danger">
-      <div *ngIf="quantity.errors.required">
-        Quantity is required.
-      </div>
-      <div *ngIf="quantity.errors.minValue">
-        Quantity must be 0 or greater.
-      </div>
-    </div>
-    <br />
     <button type='submit' [disabled]="!ingredientForm.valid">Save</button>
     <button type='button' (click)='cancel()'>Cancel</button>
+    <div *ngIf="showSaveError" class="alert alert-danger">
+      Error saving. Message:<br />{{ saveError.message }}
+    </div>
   </form>
 </div>
 
@@ -60,7 +50,7 @@
     <tr *ngFor="let ingredient of ingredients">
       <td>{{ ingredient.id }}</td>
       <td>{{ ingredient.name }}</td>
-      <td>{{ ingredient.defaultMeasurement }}</td>
+      <td>{{ ingredient.defaultMeasurement.name }}</td>
     </tr>
   </tbody>
 </table>

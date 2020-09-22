@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { PantryService } from '../pantry.service';
 
-import { IRecipe } from './recipes'
+import { IRecipe, IRecipeIngredient } from './recipes'
 import { IIngredient } from '../ingredients/ingredients'
 import { IMeasurement } from '../measurements/measurements';
 
@@ -26,24 +26,27 @@ export class RecipesComponent implements OnInit {
         measurement: new FormControl('', [Validators.required]),
         quantity: new FormControl('0', [Validators.required, Validators.min(0)])
       })
-    ])
+    ]),
+    directions: new FormControl('', [Validators.required])
   });
 
   showRecipeForm = false;
+  showSaveError = false;
+
+  saveError: {};
 
   constructor(private pantryService: PantryService) { }
 
   get name() { return this.recipeForm.get("name") };
   get ingredientList(): FormArray { return this.recipeForm.get("ingredientList") as FormArray };
-  quantity(i: number) { return this.ingredientList.controls[i].get("quantity") }
-  measurement(i: number) { return this.ingredientList.controls[i].get("measurement") }
-  ingredient(i: number) { return this.ingredientList.controls[i].get("ingredient") }
+  get directions() { return this.recipeForm.get("directions") };
+  quantity(i: number) { return this.ingredientList.controls[i].get("quantity") };
+  measurement(i: number) { return this.ingredientList.controls[i].get("measurement") };
+  ingredient(i: number) { return this.ingredientList.controls[i].get("ingredient") };
 
   ngOnInit(): void {
-    console.log("Initializing Recipes Component...")
     this.pantryService.getAllRecipes().subscribe(
       (allRecipes) => {
-        console.log(allRecipes);
         this.recipes = allRecipes;
 
         for (const recipe of allRecipes) {
@@ -56,6 +59,24 @@ export class RecipesComponent implements OnInit {
             }
           )
         }
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+
+    this.pantryService.getAllIngredients().subscribe(
+      (ingredients) => {
+        this.ingredients = ingredients;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+
+    this.pantryService.getAllMeasurements().subscribe(
+      (measurements) => {
+        this.measurements = measurements;
       },
       (error) => {
         console.log(error);
@@ -78,40 +99,56 @@ export class RecipesComponent implements OnInit {
   }
 
   save(): void {
-    let ingredients: { ingredient: string, quantity: number, measurement: string }[] = []
-    console.log(this.ingredientList.controls);
+    let recipeIngredients: IRecipeIngredient[] = []
+
     for (let group in this.ingredientList.controls) {
-      console.log(group);
       let formGroup = this.ingredientList.controls[group];
-      console.log(formGroup);
-      ingredients.push({
+      recipeIngredients.push({
         ingredient: formGroup.get("ingredient").value,
         measurement: formGroup.get("measurement").value,
         quantity: formGroup.get("quantity").value
       })
     }
 
-    // this.recipes.push({
-    //   name: this.recipeForm.get("name").value,
-    //   ingredients: ingredients
-    // });
+    let newRecipe: IRecipe = {
+      id: null,
+      name: this.recipeForm.get("name").value,
+      ingredients: recipeIngredients,
+      directions: this.recipeForm.get("directions").value,
+      canMake: true
+    }
 
-    this.clear();
+    this.pantryService.saveRecipe(newRecipe).subscribe(
+      (recipe) => {
+        this.showSaveError = false;
+
+        this.recipes.push(recipe);
+
+        this.clearForm();
+      },
+      (error) => {
+        console.log(error);
+        this.saveError = error;
+        this.showSaveError = true;
+      }
+    )
   }
 
   close(): void {
     this.showRecipeForm = false;
   }
 
-  clear(): void {
+  clearForm(): void {
     this.ingredientList.clear();
+
     this.ingredientList.push(
       new FormGroup({
         ingredient: new FormControl('', [Validators.required]),
         measurement: new FormControl('', [Validators.required]),
         quantity: new FormControl('0', [Validators.required, Validators.min(0)])
       })
-    )
+    );
+
     this.recipeForm.reset({
       name: '',
       ingredientList: [
@@ -120,8 +157,12 @@ export class RecipesComponent implements OnInit {
           measurement: '',
           quantity: '0'
         }
-      ]
-    })
+      ],
+      directions: ''
+    });
+
+    this.saveError = null;
+    this.showSaveError = false;
   }
 
   printRecipe(recipe: IRecipe): string {
@@ -133,7 +174,7 @@ export class RecipesComponent implements OnInit {
     }
     else {
       for (let ingredient of recipe.ingredients) {
-        recipeString += ingredient.quantity + " " + ingredient.measurement + " " + ingredient.ingredient;
+        recipeString += ingredient.quantity + " " + ingredient.measurement.name + " " + ingredient.ingredient.name;
 
         if (index < recipe.ingredients.length) {
           recipeString += ", ";

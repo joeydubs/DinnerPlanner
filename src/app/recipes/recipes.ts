@@ -1,3 +1,6 @@
+import { IIngredient } from '../ingredients/ingredients';
+import { IMeasurement } from '../measurements/measurements';
+
 export interface IRecipe {
   id: number,
   name: string,
@@ -7,7 +10,7 @@ export interface IRecipe {
 }
 
 export interface IRecipeIngredient {
-  ingredient: string,
-  measurement: string,
+  ingredient: IIngredient,
+  measurement: IMeasurement,
   quantity: number
 }

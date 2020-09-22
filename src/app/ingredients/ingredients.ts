@@ -1,5 +1,7 @@
+import { IMeasurement } from '../measurements/measurements';
+
 export interface IIngredient {
   id: number,
   name: string,
-  defaultMeasurement: string,
+  defaultMeasurement: IMeasurement,
 }

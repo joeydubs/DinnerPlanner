@@ -20,11 +20,11 @@
           <input type="number" formControlName="quantity" min="0" required>
           <select formControlName="measurement" required>
             <option value="" disabled>-- Select --</option>
-            <option *ngFor="let measurement of measurements" value="{{measurement.name}}">{{ measurement.name }}</option>
+            <option *ngFor="let measurement of measurements" [ngValue]="measurement">{{ measurement.name }}</option>
           </select>
           <select formControlName="ingredient" required>
             <option value="" disabled>-- Select --</option>
-            <option *ngFor="let ingredient of ingredients" value="{{ingredient.name}}">{{ ingredient.name }}</option>
+            <option *ngFor="let ingredient of ingredients" [ngValue]="ingredient">{{ ingredient.name }}</option>
           </select>
           <div *ngIf="quantity(i).invalid && (quantity(i).dirty || quantity(i).touched)" class="alert alert-danger">
             <div *ngIf="quantity(i).errors.required">
@@ -33,13 +33,15 @@
             <div *ngIf="quantity(i).errors.min">
               Ingredient quantity cannot be less than 0.
             </div>
-          </div>        
-          <div *ngIf="measurement(i).invalid && (measurement(i).dirty || measurement(i).touched)" class="alert alert-danger">
+          </div>
+          <div *ngIf="measurement(i).invalid && (measurement(i).dirty || measurement(i).touched)"
+            class="alert alert-danger">
             <div *ngIf="measurement(i).errors.required">
               Ingredient measurement is required.
             </div>
-          </div>        
-          <div *ngIf="ingredient(i).invalid && (ingredient(i).dirty || ingredient(i).touched)" class="alert alert-danger">
+          </div>
+          <div *ngIf="ingredient(i).invalid && (ingredient(i).dirty || ingredient(i).touched)"
+            class="alert alert-danger">
             <div *ngIf="ingredient(i).errors.required">
               Ingredient is required.
             </div>
@@ -47,12 +49,26 @@
         </div>
       </div>
     </label>
-    <br/>
+    <br />
     <button type="button" (click)="addIngredient()">Add ingredient</button>
-    <br/>
-    <button type="submit" [disabled]="!recipeForm.valid">Save</button>
-    <button type="button" (click)="close()">Cancel</button>
-    <button type="button" (click)="clear()">Clear</button>
+  </div>
+  <br />
+  <label>
+    Directions:
+    <br />
+    <textarea formControlName="directions" maxlength="2000" cols="50" rows="5" required></textarea>
+  </label>
+  <div *ngIf="directions.invalid && (directions.dirty || directions.touched)" class="alert alert-danger">
+    <div *ngIf="directions.errors.required">
+      Recipe directions are required.
+    </div>
+  </div>
+  <br />
+  <button type="submit" [disabled]="!recipeForm.valid">Save</button>
+  <button type="button" (click)="close()">Cancel</button>
+  <button type="button" (click)="clearForm()">Clear</button>
+  <div *ngIf="showSaveError" class="alert alert-danger">
+    Error saving. Message:<br />{{ saveError.message }}
   </div>
 </form>
 

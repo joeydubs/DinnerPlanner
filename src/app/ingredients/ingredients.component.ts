@@ -15,10 +15,12 @@ export class IngredientsComponent implements OnInit {
   ingredientForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(2)]),
     measurement: new FormControl('', [Validators.required]),
-    quantity: new FormControl('0', [Validators.required, Validators.min(0)]),
   });
 
   showIngredientForm = false;
+  showSaveError = false;
+
+  saveError: {};
 
   ingredients: IIngredient[] = [];
   measurements: IMeasurement[] = [];
@@ -34,30 +36,48 @@ export class IngredientsComponent implements OnInit {
         console.log(error);
       }
     )
+
+    this.pantryService.getAllMeasurements().subscribe(
+      (measurements) => {
+        this.measurements = measurements;
+      },
+      (error) => {
+        console.log(error);
+      }
+    )
   }
 
   get name() { return this.ingredientForm.get("name") };
   get measurement() { return this.ingredientForm.get("measurement") };
-  get quantity() { return this.ingredientForm.get("quantity") };
 
   newIngredient(): void {
     this.showIngredientForm = true;
   }
 
   save(): void {
-    let newIng: IIngredient = {
+    let newIngredient: IIngredient = {
       id: null,
       name: this.ingredientForm.get("name").value,
       defaultMeasurement: this.ingredientForm.get("measurement").value,
     }
 
-    this.ingredients.push(newIng);
+    this.pantryService.saveIngredient(newIngredient).subscribe(
+      (ingredient) => {
+        this.showSaveError = false;
+        
+        this.ingredients.push(ingredient);
 
-    this.ingredientForm.reset({
-      name: '',
-      measurement: '',
-      quantity: '0',
-    });
+        this.ingredientForm.reset({
+          name: '',
+          measurement: '',
+        });
+      },
+      (error) => {
+        console.log(error);
+        this.saveError = error;
+        this.showSaveError = true;
+      }
+    )
   }
 
   cancel(): void {

@@ -42,6 +42,16 @@ export class PantryService {
 
   saveConversion(newConversion: IConversion): Observable<IConversion> {
     let body = { "newConversion": newConversion };
-    return this.http.post<IConversion>("https://ngpantry.duckdns.org/api/saveConversion", body)
+    return this.http.post<IConversion>("https://ngpantry.duckdns.org/api/saveConversion", body);
+  }
+
+  saveIngredient(newIngredient: IIngredient): Observable<IIngredient> {
+    let body = { "newIngredient": newIngredient };
+    return this.http.post<IIngredient>("https://ngpantry.duckdns.org/api/saveIngredient", body);
+  }
+
+  saveRecipe(newRecipe: IRecipe): Observable<IRecipe> {
+    let body = { "newRecipe": newRecipe };
+    return this.http.post<IRecipe>("https://ngpantry.duckdns.org/api/saveRecipe", body);
   }
 }
