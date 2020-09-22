@@ -1,9 +1,11 @@
+import { IMeasurement } from '../measurements/measurements';
+import { IIngredient } from '../ingredients/ingredients';
+
 export interface IConversion {
-  id: number,
+  ingredient: IIngredient,
   isGeneric: boolean,
-  ingredientName: number,
-  measOneName: string,
+  measOne: IMeasurement,
   measOneQty: number,
-  measTwoName: string,
+  measTwo: IMeasurement,
   measTwoQty: number
 }

@@ -19,19 +19,14 @@
     <br/>
     <label>
       Abbreviation:
-      <input type="text" formControlName="abbreviation" minlength="2" required>
+      <input type="text" formControlName="abbreviation">
     </label>
-    <div *ngIf="abbreviation.invalid && (abbreviation.dirty || abbreviation.touched)" class="alert alert-danger">
-      <div *ngIf="abbreviation.errors.required">
-        Abbreviation is required.
-      </div>
-      <div *ngIf="abbreviation.errors.minlength">
-        Abbreviation must be at least 2 characters long.
-      </div>
-    </div>
     <br/>
     <button type="submit" [disabled]="!measurementForm.valid">Save</button>
     <button type="button" (click)="close()">Cancel</button>
+    <div *ngIf="showSaveError" class="alert alert-danger">
+      Error saving. Message:<br/>{{ saveError.message }}
+    </div>
   </form>
 </div>
 

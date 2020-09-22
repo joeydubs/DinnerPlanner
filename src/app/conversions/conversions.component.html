@@ -8,7 +8,7 @@
     <input type="integer" formControlName="fromQty" min="0" required>
     <select formControlName="fromName" required>
       <option value="" disabled>-- Select --</option>
-      <option *ngFor="let measurement of measurements" value="{{measurement.name}}">{{ measurement.name }}</option>
+      <option *ngFor="let measurement of measurements" [ngValue]="measurement">{{ measurement.name }}</option>
     </select>
   </label>
   <div *ngIf="fromQty.invalid && (fromQty.touched || fromQty.dirty)" class="alert alert-danger">
@@ -32,7 +32,7 @@
     <input type="integer" formControlName="toQty" min="0" required>
     <select formControlName="toName" required>
       <option value="" disabled>-- Select --</option>
-      <option *ngFor="let measurement of measurements" value="{{measurement.name}}">{{ measurement.name }}</option>
+      <option *ngFor="let measurement of measurements" [ngValue]="measurement">{{ measurement.name }}</option>
     </select>
   </label>
   <div *ngIf="toQty.invalid && (toQty.touched || toQty.dirty)" class="alert alert-danger">
@@ -52,25 +52,26 @@
   <br/>
   <button type="submit" [disabled]="!conversionForm.valid">Save</button>
   <button type="button" (click)="close()">Cancel</button>
+  <div *ngIf="showSaveError" class="alert alert-danger">
+    Error saving. Message:<br />{{ saveError.message }}
+  </div>
 </form>
 
 <table *ngIf="conversions.length > 0" class="table table-striped">
   <thead class="thead-dark">
     <tr>
-      <th>ID</th>
       <th>Measurement One</th>
       <th>Measurement Two</th>
       <th>Is Generic</th>
-      <th>Ingredient Id</th>
+      <th>Ingredient</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let conversion of conversions">
-      <td>{{ conversion.id }}</td>
-      <td>{{ conversion.measOneQty }} {{ conversion.measOneName }}</td>
-      <td>{{ conversion.measTwoQty }} {{ conversion.measTwoName }}</td>
+      <td>{{ conversion.measOneQty }} {{ conversion.measOne.name }}</td>
+      <td>{{ conversion.measTwoQty }} {{ conversion.measTwo.name }}</td>
       <td>{{ conversion.isGeneric }}</td>
-      <td>{{ conversion.ingredientId }}</td>
+      <td>{{ conversion.ingredient.name }}</td>
     </tr>
   </tbody>
 </table>

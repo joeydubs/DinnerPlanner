@@ -13,10 +13,13 @@ export class MeasurementsComponent implements OnInit {
 
   measurementForm: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(2)]),
-    abbreviation: new FormControl('', [Validators.required, Validators.minLength(2)])
+    abbreviation: new FormControl('')
   })
 
   showMeasurementForm = false;
+  showSaveError = false;
+
+  saveError: {};
 
   measurements: IMeasurement[] = [];
 
@@ -41,17 +44,28 @@ export class MeasurementsComponent implements OnInit {
   }
 
   save(): void {
-    let newMeas: IMeasurement = {
+    let newMeasurement: IMeasurement = {
       id: null,
       name: this.measurementForm.get("name").value,
       abbr: this.measurementForm.get("abbreviation").value
     }
-    this.measurements.push(newMeas);
 
-    this.measurementForm.reset({
-      name: "",
-      abbreviation: ""
-    });
+    this.pantryService.saveMeasurement(newMeasurement).subscribe(
+      (measurement) => {
+        this.measurements.push(measurement);
+
+        this.showSaveError = false;
+
+        this.measurementForm.reset({
+          name: "",
+          abbreviation: ""
+        });
+      },
+      (error) => {
+        this.saveError = error;
+        this.showSaveError = true;
+      }
+    );
   }
 
   close(): void {

@@ -23,6 +23,9 @@ export class ConversionsComponent implements OnInit {
   });
 
   showConversionForm = false;
+  showSaveError = false;
+
+  saveError: {};
 
   constructor(private pantryService: PantryService) { }
 
@@ -35,6 +38,15 @@ export class ConversionsComponent implements OnInit {
         console.log(error);
       }
     )
+
+    this.pantryService.getAllMeasurements().subscribe(
+      (measurements) => {
+        this.measurements = measurements;
+      },
+      (error) => {
+        console.log(error);
+      }
+    )
   }
 
   get fromQty() { return this.conversionForm.get("fromQty") }
@@ -42,31 +54,45 @@ export class ConversionsComponent implements OnInit {
   get toQty() { return this.conversionForm.get("toQty") }
   get toName() { return this.conversionForm.get("toName") }
 
-  minValueValidator(min: number): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
-      const forbidden = control.value < min;
-      return forbidden ? { minValue: { value: control.value } } : null;
-    }
-  }
-
   newConversion(): void {
     this.showConversionForm = true;
   }
 
   save(): void {
-    // this.conversions.push({
-    //   fromQty: this.conversionForm.get("fromQty").value,
-    //   fromName: this.conversionForm.get("fromName").value,
-    //   toQty: this.conversionForm.get("toQty").value,
-    //   toName: this.conversionForm.get("toName").value
-    // })
+    let newConversion: IConversion = {
+      ingredient: {
+        id: 1,
+        name: "Generic",
+        defaultMeasurement: null
+      },
+      isGeneric: true,
+      measOneQty: this.conversionForm.get("fromQty").value,
+      measOne: this.conversionForm.get("fromName").value,
+      measTwoQty: this.conversionForm.get("toQty").value,
+      measTwo: this.conversionForm.get("toName").value
+    }
 
-    this.conversionForm.reset({
-      fromQty: "0",
-      fromName: "",
-      toQty: "0",
-      toName: ""
-    })
+    console.log(JSON.stringify(newConversion));
+
+    this.pantryService.saveConversion(newConversion).subscribe(
+      (conversion) => {
+        this.showSaveError = false;
+
+        this.conversions.push(conversion);
+
+        this.conversionForm.reset({
+          fromQty: "0",
+          fromName: "",
+          toQty: "0",
+          toName: ""
+        })
+      },
+      (error) => {
+        console.log(error);
+        this.saveError = error;
+        this.showSaveError = true;
+      }
+    )
   }
 
   close(): void {

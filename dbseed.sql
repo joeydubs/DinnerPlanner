@@ -4,6 +4,11 @@ USE dinnerplanner;
 -- MEASUREMENTS SEED DATA --
 
 INSERT INTO measurements
+  (id, name)
+VALUES
+  (1, "generic");
+
+INSERT INTO measurements
   (name, abbr)
 VALUES
   ("Teaspoon", "tsp");
@@ -38,14 +43,19 @@ VALUES
 
 -- INGREDIENTS SEED DATA --
 INSERT INTO ingredients
-  (name, defaultMeasId)
+  (id, name, defaultMeasId)
 VALUES
-  ("Flour", 4);
+  (1, "Generic", 1);
 
 INSERT INTO ingredients
   (name, defaultMeasId)
 VALUES
-  ("Egg", 6);
+  ("Flour", 5);
+
+INSERT INTO ingredients
+  (name, defaultMeasId)
+VALUES
+  ("Egg", 7);
 
 
 
@@ -55,12 +65,12 @@ VALUES
 INSERT INTO conversions
   (isGeneric, ingredientId, measOneId, measOneQty, measTwoId, measTwoQty)
 VALUES
-  (true, null, 1, 3, 2, 1);
+  (true, 1, 2, 3, 3, 1);
 
 INSERT INTO conversions
   (isGeneric, ingredientId, measOneId, measOneQty, measTwoId, measTwoQty)
 VALUES
-  (true, null, 2, 16, 3, 1);
+  (true, 1, 3, 16, 4, 1);
 
 
 
@@ -70,12 +80,12 @@ VALUES
 INSERT INTO pantry
   (ingredientId, qoh)
 VALUES
-  (1, 5);
+  (2, 5);
 
 INSERT INTO pantry
   (ingredientId, qoh)
 VALUES
-  (2, 6);
+  (3, 6);
 
 
 
@@ -100,15 +110,15 @@ VALUES
 INSERT INTO recipe_ingredients
   (recipeId, ingredientId, measurementId, quantity)
 VALUES
-  (1, 1, 2, 3);
+  (1, 2, 3, 3);
 
 INSERT INTO recipe_ingredients
   (recipeId, ingredientId, measurementId, quantity)
 VALUES
-  (1, 2, 6, 1);
+  (1, 3, 7, 1);
 
 INSERT INTO recipe_ingredients
   (recipeId, ingredientId, measurementId, quantity)
 VALUES
-  (2, 2, 6, 2);
+  (2, 3, 7, 2);
 

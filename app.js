@@ -31,7 +31,7 @@ app.use((req, res, next) => {
 app.get('/getAllMeasurements', async function (req, res) {
   res.setHeader("ContentType", "application/json");
 
-  let measurements = await pool.query("SELECT * FROM measurements");
+  let measurements = await pool.query("SELECT * FROM measurements WHERE measurements.id <> 1");
 
   res.status(200);
   res.send(JSON.stringify(measurements));
@@ -40,15 +40,44 @@ app.get('/getAllMeasurements', async function (req, res) {
 app.get('/getAllConversions', async function (req, res) {
   res.setHeader("ContentType", "application/json");
 
-  let conversions = await pool.query(
+  let results = await pool.query(
     `
-    SELECT c.id, c.isGeneric, c.measOneQty, c.measTwoQty, m1.name AS measOneName, m2.name AS measTwoName, i.name AS ingredientName
+    SELECT c.isGeneric, c.measOneQty, c.measTwoQty,
+    i.id AS ingredientId, i.name AS ingredientName,
+    m1.id AS measOneId, m1.name AS measOneName, m1.abbr AS measOneAbbr,
+    m2.id AS measTwoId, m2.name AS measTwoName, m2.abbr AS measTwoAbbr
     FROM conversions as c
     INNER JOIN measurements AS m1 ON m1.id = c.measOneId
     INNER JOIN measurements AS m2 ON m2.id = c.measTwoId
     LEFT JOIN ingredients AS i ON i.id = c.ingredientId
     `
   );
+
+  let conversions = [];
+
+  for (result of results) {
+    let conversion = {
+      ingredient: {
+        id: result.ingredientId,
+        name: result.ingredientName,
+      },
+      isGeneric: result.isGeneric,
+      measOne: {
+        id: result.measOneId,
+        name: result.measOneName,
+        abbr: result.measOneAbbr
+      },
+      measOneQty: result.measOneQty,
+      measTwo: {
+        id: result.measTwoId,
+        name: result.measTwoName,
+        abbr: result.measTwoAbbr
+      },
+      measTwoQty: result.measTwoQty
+    }
+
+    conversions.push(conversion);
+  }
 
   res.status(200);
   res.send(JSON.stringify(conversions));
@@ -62,6 +91,7 @@ app.get('/getAllIngredients', async function (req, res) {
     SELECT i.id, i.name, m.name AS defaultMeasurement
     FROM ingredients as i
     INNER JOIN measurements AS m ON m.id = i.defaultMeasId
+    WHERE i.id <> 1
     `
   );
 
@@ -95,6 +125,61 @@ app.get('/getRecipeIngredients', async function (req, res) {
 
   res.status(200);
   res.send(JSON.stringify(ingredients));
+})
+
+app.post('/saveMeasurement', async function (req, res) {
+  res.setHeader("ContentType", "application/json");
+
+  let newMeas = req.body.newMeasurement
+
+  try {
+    let insert = await pool.query("INSERT INTO measurements (name, abbr) VALUES (?, ?)", [newMeas.name, newMeas.abbr]);
+
+    newMeas.id = insert.insertId;
+
+    res.status(200);
+    res.send(newMeas);
+  }
+  catch (error) {
+    if (error.code === "ER_DUP_ENTRY") {
+      res.status(409);
+    }
+    else {
+      res.status(500);
+    }
+    res.send(error);
+  }
+})
+
+app.post("/saveConversion", async function (req, res) {
+  res.setHeader("ContentType", "application/json");
+
+  let newConv = req.body.newConversion;
+
+  try {
+    let insert = await pool.query(
+      `
+      INSERT INTO conversions (ingredientId, isGeneric, measOneQty, measOneId, measTwoQty, measTwoId)
+      VALUES (?, ?, ?, ?, ?, ?)
+      `,
+      [newConv.ingredient.id, newConv.isGeneric, newConv.measOneQty, newConv.measOne.id, newConv.measTwoQty, newConv.measTwo.id]
+    )
+
+    newConv.id = insert.insertId;
+
+    res.status(200);
+    res.send(newConv);
+  }
+  catch (error) {
+    console.log(error);
+    if (error.code === "ER_DUP_ENTRY") {
+      res.status(409);
+    }
+    else {
+      res.status(500);
+    }
+    res.send(error);
+  }
 })
 
 app.listen(port, function() {

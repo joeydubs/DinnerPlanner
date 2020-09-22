@@ -15,22 +15,33 @@ export class PantryService {
   constructor(private http: HttpClient) { }
 
   getAllMeasurements(): Observable<IMeasurement[]> {
-    return this.http.get<IMeasurement[]>("http://ngpantry.duckdns.org/api/getAllMeasurements");
+    return this.http.get<IMeasurement[]>("https://ngpantry.duckdns.org/api/getAllMeasurements");
   }
 
   getAllConversions(): Observable<IConversion[]> {
-    return this.http.get<IConversion[]>("http://ngpantry.duckdns.org/api/getAllConversions");
+    return this.http.get<IConversion[]>("https://ngpantry.duckdns.org/api/getAllConversions");
   }
 
   getAllIngredients(): Observable<IIngredient[]> {
-    return this.http.get<IIngredient[]>("http://ngpantry.duckdns.org/api/getAllIngredients");
+    return this.http.get<IIngredient[]>("https://ngpantry.duckdns.org/api/getAllIngredients");
   }
 
   getAllRecipes(): Observable<IRecipe[]> {
-    return this.http.get<IRecipe[]>("http://ngpantry.duckdns.org/api/getAllRecipes");
+    return this.http.get<IRecipe[]>("https://ngpantry.duckdns.org/api/getAllRecipes");
   }
 
   getRecipeIngredients(recipeId: number): Observable<IRecipeIngredient[]> {
-    return this.http.get<IRecipeIngredient[]>("http://ngpantry.duckdns.org/api/getRecipeIngredients", { "params": { "recipeId": String(recipeId) } });
+    let options = { "params": { "recipeId": String(recipeId) } };
+    return this.http.get<IRecipeIngredient[]>("https://ngpantry.duckdns.org/api/getRecipeIngredients", options);
+  }
+
+  saveMeasurement(newMeasurement: IMeasurement): Observable<IMeasurement> {
+    let body = { "newMeasurement": newMeasurement };
+    return this.http.post<IMeasurement>("https://ngpantry.duckdns.org/api/saveMeasurement", body);
+  }
+
+  saveConversion(newConversion: IConversion): Observable<IConversion> {
+    let body = { "newConversion": newConversion };
+    return this.http.post<IConversion>("https://ngpantry.duckdns.org/api/saveConversion", body)
   }
 }

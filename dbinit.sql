@@ -23,14 +23,13 @@ CREATE TABLE ingredients (
 );
 
 CREATE TABLE conversions (
-  id INTEGER AUTO_INCREMENT,
   isGeneric BOOLEAN,
   ingredientId INTEGER,
   measOneId INTEGER,
   measOneQty DOUBLE NOT NULL,
   measTwoId INTEGER,
   measTwoQty DOUBLE NOT NULL,
-  PRIMARY KEY (id),
+  PRIMARY KEY (ingredientId, measOneId, measTwoId),
   FOREIGN KEY (ingredientId) REFERENCES ingredients(id),
   FOREIGN KEY (measOneId) REFERENCES measurements(id),
   FOREIGN KEY (measTwoId) REFERENCES measurements(id)
