@@ -1,21 +1,24 @@
-<nav class="navbar bg-dark navbar-expand-sm navbar-dark">
-  <ul class="navbar-nav">
-    <li class="nav-item dropdown border rounded border-secondary" ngbDropdown>
-      <a class="nav-link dropdown-toggle" id="navbardrop" ngbDropdownToggle>Manage</a>
-      <div class="dropdown-menu" ngbDropdownMenu>
-        <a class="dropdown-item" ngbDropdownItem routerLink='/manageRecipes'>Recipes</a>
-        <a class="dropdown-item" ngbDropdownItem routerLink='/manageIngredients'>Ingredients</a>
-        <a class="dropdown-item" ngbDropdownItem routerLink='/manageMeasurements'>Measurements</a>
-        <a class="dropdown-item" ngbDropdownItem routerLink='/manageConversions'>Conversions</a>        
-      </div>
-    </li>
-    <li class="nav-item border rounded border-secondary ml-2">
-      <a class="nav-link" routerLink="/pantry">Pantry</a>
-    </li>
-    <li class="nav-item border rounded border-secondary ml-2">
-      <a class="nav-link" routerLink='/myRecipes'>My Recipes</a>
-    </li>
-  </ul>
+<nav class="navbar bg-dark navbar-expand-md navbar-dark">
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggler" (click)="isMenuCollapsed = !isMenuCollapsed">
+      Menu
+    </button>
+  </div>
+  <div class="collapse navbar-collapse" [ngbCollapse]="isMenuCollapsed">
+    <ul class="navbar-nav">
+      <li ngbDropdown>
+        <a class="nav-link" ngbDropdownToggle>Manage</a>
+        <div class="dropdown-menu bg-dark" ngbDropdownMenu>
+          <a class="dropdown-item" ngbDropdownItem routerLink='/manageRecipes' (click)="isMenuCollapsed = true">Recipes</a>
+          <a class="dropdown-item" ngbDropdownItem routerLink='/manageIngredients' (click)="isMenuCollapsed = true">Ingredients</a>
+          <a class="dropdown-item" ngbDropdownItem routerLink='/manageMeasurements' (click)="isMenuCollapsed = true">Measurements</a>
+          <a class="dropdown-item" ngbDropdownItem routerLink='/manageConversions' (click)="isMenuCollapsed = true">Conversions</a>
+        </div>
+      </li>
+      <li><a class="nav-link" routerLink="/pantry" (click)="isMenuCollapsed = true">Pantry</a></li>
+      <li><a class="nav-link" routerLink='/myRecipes' (click)="isMenuCollapsed = true">My Recipes</a></li>
+    </ul>
+  </div>
 </nav>
 
 <router-outlet></router-outlet>
