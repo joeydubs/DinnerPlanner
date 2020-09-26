@@ -1,48 +1,58 @@
-<h2>Manage Measurements</h2>
+<div class="container-fluid">
 
-<div>
-  <button (click)="newMeasurement()">New Measurement</button>
+  <h2>Manage Measurements</h2>
 
-  <form *ngIf="showMeasurementForm" [formGroup]="measurementForm" (ngSubmit)="save()">
-    <label>
-      Measurement Name:
-      <input type="text" formControlName="name" minlength="2" required>
-    </label>
-    <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
-      <div *ngIf="name.errors.required">
-        Ingredient name is requires.
-      </div>
-      <div *ngIf="name.errors.minlength">
-        Ingredient name must be at least 2 characters long.
+  <button class="btn btn-info" (click)="isCollapsed = !isCollapsed">New Measurement</button>
+
+  <div class="container-fluid mt-1 mb-1">
+    <div class="row">
+      <div class="col-sm-10 col-md-8 col-lg-6 bg-light border-dark pt-2 rounded shadow" [ngbCollapse]="isCollapsed">
+        <form [formGroup]="measurementForm" (ngSubmit)="save()">
+          <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" formControlName="name" id="name" minlength="2"
+              placeholder="Teaspoon" required>
+            <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
+              <div *ngIf="name.errors.required">
+                Measurement name is required.
+              </div>
+              <div *ngIf="name.errors.minlength">
+                Measurement name must be at least 2 characters long.
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="abbreviation">Abbreviation:</label>
+            <input type="text" class="form-control" formControlName="abbreviation" id="abbreviation" placeholder="Tsp">
+          </div>
+          <div class="form-group">
+            <button type="submit" class="form-control btn-success" [disabled]="!measurementForm.valid">Save</button>
+            <div *ngIf="showSaveError" class="alert alert-danger">
+              An error occurred while saving Measurement.<br />{{ saveError.message }}
+            </div>
+          </div>
+          <div class="form-group">
+            <button type="button" class="form-control btn-danger" (click)="close()">Cancel</button>
+          </div>
+        </form>
       </div>
     </div>
-    <br/>
-    <label>
-      Abbreviation:
-      <input type="text" formControlName="abbreviation">
-    </label>
-    <br/>
-    <button type="submit" [disabled]="!measurementForm.valid">Save</button>
-    <button type="button" (click)="close()">Cancel</button>
-    <div *ngIf="showSaveError" class="alert alert-danger">
-      Error saving. Message:<br/>{{ saveError.message }}
-    </div>
-  </form>
+  </div>
+
+  <table class="table table-striped shadow" *ngIf="measurements.length > 0">
+    <thead class="thead-dark">
+      <tr>
+        <th>ID</th>
+        <th>Measurement</th>
+        <th>Abbreviation</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let measurement of measurements">
+        <td> {{ measurement.id }}</td>
+        <td> {{ measurement.name }}</td>
+        <td> {{ measurement.abbr }}</td>
+      </tr>
+    </tbody>
+  </table>
 </div>
-
-<table *ngIf="measurements.length > 0" class="table table-striped">
-  <thead class="thead-dark">
-    <tr>
-      <th>ID</th>
-      <th>Ingredient</th>
-      <th>Abbreviation</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let measurement of measurements">
-      <td> {{ measurement.id }}</td>
-      <td> {{ measurement.name }}</td>
-      <td> {{ measurement.abbr }}</td>
-    </tr>
-  </tbody>
-</table>

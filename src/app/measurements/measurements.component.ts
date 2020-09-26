@@ -16,7 +16,7 @@ export class MeasurementsComponent implements OnInit {
     abbreviation: new FormControl('')
   })
 
-  showMeasurementForm = false;
+  isCollapsed = true;
   showSaveError = false;
 
   saveError: {};
@@ -38,10 +38,6 @@ export class MeasurementsComponent implements OnInit {
 
   get name() { return this.measurementForm.get("name") };
   get abbreviation() { return this.measurementForm.get("abbreviation") };
-
-  newMeasurement(): void {
-    this.showMeasurementForm = true;
-  }
 
   save(): void {
     let newMeasurement: IMeasurement = {
@@ -69,7 +65,12 @@ export class MeasurementsComponent implements OnInit {
   }
 
   close(): void {
-    this.showMeasurementForm = false;
+    this.measurementForm.reset({
+      name: "",
+      abbreviation: ""
+    });
+
+    this.isCollapsed = true;
   }
 
 }
