@@ -2,11 +2,13 @@
 
   <h2>Manage Measurements</h2>
 
-  <button class="btn btn-info" (click)="isCollapsed = !isCollapsed">New Measurement</button>
+  <button class="btn btn-info" *ngIf="isCollapsed" (click)="isCollapsed = !isCollapsed">New Measurement</button>
 
-  <div class="container-fluid mt-1 mb-1">
-    <div class="row">
-      <div class="col-sm-10 col-md-8 col-lg-6 bg-light border-dark pt-2 rounded shadow" [ngbCollapse]="isCollapsed">
+  <div class="container-fluid">
+    <div class="row" [ngbCollapse]="isCollapsed">
+      <div class="col-md-6 col-lg-4 bg-light pt-2 rounded shadow">
+        <h3 class="text-info">New Measurement</h3>
+
         <form [formGroup]="measurementForm" (ngSubmit)="save()">
           <div class="form-group">
             <label for="name">Name:</label>
@@ -25,19 +27,22 @@
             <label for="abbreviation">Abbreviation:</label>
             <input type="text" class="form-control" formControlName="abbreviation" id="abbreviation" placeholder="Tsp">
           </div>
-          <div class="form-group">
-            <button type="submit" class="form-control btn-success" [disabled]="!measurementForm.valid">Save</button>
-            <div *ngIf="showSaveError" class="alert alert-danger">
-              An error occurred while saving Measurement.<br />{{ saveError.message }}
-            </div>
+          <div class="form-row pb-3">
+            <button type="submit" class="form-control col-md order-md-last btn-success"
+              [disabled]="!measurementForm.valid">Save</button>
+            <span class="col-md"></span>
+            <button type="button" class="form-control col-md order-md-first btn-danger"
+              (click)="close()">Cancel</button>
           </div>
-          <div class="form-group">
-            <button type="button" class="form-control btn-danger" (click)="close()">Cancel</button>
+          <div *ngIf="showSaveError" class="alert alert-danger text-break">
+            An error occurred while saving Measurement.<br />{{ saveError.message }}
           </div>
         </form>
       </div>
     </div>
   </div>
+
+  <hr />
 
   <table class="table table-striped shadow" *ngIf="measurements.length > 0">
     <thead class="thead-dark">

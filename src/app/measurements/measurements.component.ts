@@ -65,6 +65,8 @@ export class MeasurementsComponent implements OnInit {
   }
 
   close(): void {
+    this.showSaveError = false;
+
     this.measurementForm.reset({
       name: "",
       abbreviation: ""

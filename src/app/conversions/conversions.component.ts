@@ -22,7 +22,7 @@ export class ConversionsComponent implements OnInit {
     toName: new FormControl("", [Validators.required])
   });
 
-  showConversionForm = false;
+  isCollapsed = true;
   showSaveError = false;
 
   saveError: {};
@@ -53,10 +53,6 @@ export class ConversionsComponent implements OnInit {
   get fromName() { return this.conversionForm.get("fromName") }
   get toQty() { return this.conversionForm.get("toQty") }
   get toName() { return this.conversionForm.get("toName") }
-
-  newConversion(): void {
-    this.showConversionForm = true;
-  }
 
   save(): void {
     let newConversion: IConversion = {
@@ -94,6 +90,15 @@ export class ConversionsComponent implements OnInit {
   }
 
   close(): void {
-    this.showConversionForm = false;
+    this.showSaveError = false;
+
+    this.conversionForm.reset({
+      fromQty: "0",
+      fromName: "",
+      toQty: "0",
+      toName: ""
+    })
+
+    this.isCollapsed = true;
   }
 }

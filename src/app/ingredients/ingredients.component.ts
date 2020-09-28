@@ -17,7 +17,7 @@ export class IngredientsComponent implements OnInit {
     measurement: new FormControl('', [Validators.required]),
   });
 
-  showIngredientForm = false;
+  isCollapsed = true;
   showSaveError = false;
 
   saveError: {};
@@ -50,10 +50,6 @@ export class IngredientsComponent implements OnInit {
   get name() { return this.ingredientForm.get("name") };
   get measurement() { return this.ingredientForm.get("measurement") };
 
-  newIngredient(): void {
-    this.showIngredientForm = true;
-  }
-
   save(): void {
     let newIngredient: IIngredient = {
       id: null,
@@ -81,6 +77,13 @@ export class IngredientsComponent implements OnInit {
   }
 
   cancel(): void {
-    this.showIngredientForm = false;
+    this.showSaveError = false;
+
+    this.ingredientForm.reset({
+      name: '',
+      measurement: '',
+    });
+
+    this.isCollapsed = true;
   }
 }

@@ -1,77 +1,85 @@
-<h2>Manage Conversions</h2>
+<div class="container-fluid">
 
-<button (click)="newConversion()">Add Conversion</button>
+  <h2>Manage Conversions</h2>
 
-<form *ngIf="showConversionForm" [formGroup]="conversionForm" (ngSubmit)="save()">
-  <label>
-    Measurement 1: 
-    <input type="integer" formControlName="fromQty" min="0" required>
-    <select formControlName="fromName" required>
-      <option value="" disabled>-- Select --</option>
-      <option *ngFor="let measurement of measurements" [ngValue]="measurement">{{ measurement.name }}</option>
-    </select>
-  </label>
-  <div *ngIf="fromQty.invalid && (fromQty.touched || fromQty.dirty)" class="alert alert-danger">
-    <div *ngIf="fromQty.errors.required">
-      A quantity for Measurement 1 is required.
-    </div>
-    <div *ngIf="fromQty.errors.min">
-      Quantity for Measurement 1 cannot be less than 0.
+  <button class="btn btn-info" *ngIf="isCollapsed" (click)="isCollapsed = !isCollapsed">Add Conversion</button>
+
+  <div class="container-fluid">
+    <div class="row" [ngbCollapse]="isCollapsed">
+      <div class="col-md-6 col-lg-4 bg-light pt-2 shadow rounded">
+        <form [formGroup]="conversionForm" (ngSubmit)="save()">
+          <div class="form-row">
+            <label>Measurement 1:</label>
+            <input type="integer" class="form-control" formControlName="fromQty" min="0" required>
+            <select class="form-control" formControlName="fromName" required>
+              <option value="" disabled>-- Select --</option>
+              <option *ngFor="let measurement of measurements" [ngValue]="measurement">{{ measurement.name }}</option>
+            </select>
+            <div *ngIf="fromQty.invalid && (fromQty.touched || fromQty.dirty)" class="alert alert-danger">
+              <div *ngIf="fromQty.errors.required">
+                A quantity for Measurement 1 is required.
+              </div>
+              <div *ngIf="fromQty.errors.min">
+                Quantity for Measurement 1 cannot be less than 0.
+              </div>
+            </div>
+            <div *ngIf="fromName.invalid && (fromName.touched || fromName.dirty)" class="alert alert-danger">
+              <div *ngIf="fromName.errors.required">
+                A measurement must be selected for Measurement 1.
+              </div>
+            </div>
+          </div>
+
+          <p>-- Is equivalent to --</p>
+
+          <label>
+            Measurement 2:
+            <input type="integer" formControlName="toQty" min="0" required>
+            <select formControlName="toName" required>
+              <option value="" disabled>-- Select --</option>
+              <option *ngFor="let measurement of measurements" [ngValue]="measurement">{{ measurement.name }}</option>
+            </select>
+          </label>
+          <div *ngIf="toQty.invalid && (toQty.touched || toQty.dirty)" class="alert alert-danger">
+            <div *ngIf="toQty.errors.required">
+              A quantity for Measurement 2 is required.
+            </div>
+            <div *ngIf="toQty.errors.min">
+              Quantity for Measurement 2 cannot be less than 0.
+            </div>
+          </div>
+          <div *ngIf="toName.invalid && (toName.touched || toName.dirty)" class="alert alert-danger">
+            <div *ngIf="toName.errors.required">
+              A measurement must be selected for Measurement 1.
+            </div>
+          </div>
+
+          <button type="submit" [disabled]="!conversionForm.valid">Save</button>
+          <button type="button" (click)="close()">Cancel</button>
+          <div *ngIf="showSaveError" class="alert alert-danger">
+            Error saving. Message:<br />{{ saveError.message }}
+          </div>
+        </form>
+      </div>
     </div>
   </div>
-  <div *ngIf="fromName.invalid && (fromName.touched || fromName.dirty)" class="alert alert-danger">
-    <div *ngIf="fromName.errors.required">
-      A measurement must be selected for Measurement 1.
-    </div>
-  </div>
 
-  <p>-- Is equivalent to --</p>
-
-  <label>
-    Measurement 2:
-    <input type="integer" formControlName="toQty" min="0" required>
-    <select formControlName="toName" required>
-      <option value="" disabled>-- Select --</option>
-      <option *ngFor="let measurement of measurements" [ngValue]="measurement">{{ measurement.name }}</option>
-    </select>
-  </label>
-  <div *ngIf="toQty.invalid && (toQty.touched || toQty.dirty)" class="alert alert-danger">
-    <div *ngIf="toQty.errors.required">
-      A quantity for Measurement 2 is required.
-    </div>
-    <div *ngIf="toQty.errors.min">
-      Quantity for Measurement 2 cannot be less than 0.
-    </div>
-  </div>
-  <div *ngIf="toName.invalid && (toName.touched || toName.dirty)" class="alert alert-danger">
-    <div *ngIf="toName.errors.required">
-      A measurement must be selected for Measurement 1.
-    </div>
-  </div>
-
-  <br/>
-  <button type="submit" [disabled]="!conversionForm.valid">Save</button>
-  <button type="button" (click)="close()">Cancel</button>
-  <div *ngIf="showSaveError" class="alert alert-danger">
-    Error saving. Message:<br />{{ saveError.message }}
-  </div>
-</form>
-
-<table *ngIf="conversions.length > 0" class="table table-striped">
-  <thead class="thead-dark">
-    <tr>
-      <th>Measurement One</th>
-      <th>Measurement Two</th>
-      <th>Is Generic</th>
-      <th>Ingredient</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let conversion of conversions">
-      <td>{{ conversion.measOneQty }} {{ conversion.measOne.name }}</td>
-      <td>{{ conversion.measTwoQty }} {{ conversion.measTwo.name }}</td>
-      <td>{{ conversion.isGeneric }}</td>
-      <td>{{ conversion.ingredient.name }}</td>
-    </tr>
-  </tbody>
-</table>
+  <table *ngIf="conversions.length > 0" class="table table-striped shadow">
+    <thead class="thead-dark">
+      <tr>
+        <th>Measurement One</th>
+        <th>Measurement Two</th>
+        <th>Is Generic</th>
+        <th>Ingredient</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let conversion of conversions">
+        <td>{{ conversion.measOneQty }} {{ conversion.measOne.name }}</td>
+        <td>{{ conversion.measTwoQty }} {{ conversion.measTwo.name }}</td>
+        <td>{{ conversion.isGeneric }}</td>
+        <td>{{ conversion.ingredient.name }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
