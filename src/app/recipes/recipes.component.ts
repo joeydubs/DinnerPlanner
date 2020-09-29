@@ -30,7 +30,7 @@ export class RecipesComponent implements OnInit {
     directions: new FormControl('', [Validators.required])
   });
 
-  showRecipeForm = false;
+  isCollapsed = true;
   showSaveError = false;
 
   saveError: {};
@@ -82,10 +82,6 @@ export class RecipesComponent implements OnInit {
         console.log(error);
       }
     )
-  }
-
-  newRecipe(): void {
-    this.showRecipeForm = true;
   }
 
   addIngredient(): void {
@@ -140,7 +136,11 @@ export class RecipesComponent implements OnInit {
   }
 
   close(): void {
-    this.showRecipeForm = false;
+    this.showSaveError = false;
+
+    this.clearForm();
+
+    this.isCollapsed = true;
   }
 
   clearForm(): void {

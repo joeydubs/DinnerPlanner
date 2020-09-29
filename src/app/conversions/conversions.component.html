@@ -7,14 +7,17 @@
   <div class="container-fluid">
     <div class="row" [ngbCollapse]="isCollapsed">
       <div class="col-md-6 col-lg-4 bg-light pt-2 shadow rounded">
+        <h3 class="text-info">New Conversion</h3>
         <form [formGroup]="conversionForm" (ngSubmit)="save()">
-          <div class="form-row">
-            <label>Measurement 1:</label>
-            <input type="integer" class="form-control" formControlName="fromQty" min="0" required>
-            <select class="form-control" formControlName="fromName" required>
-              <option value="" disabled>-- Select --</option>
-              <option *ngFor="let measurement of measurements" [ngValue]="measurement">{{ measurement.name }}</option>
-            </select>
+          <div class="form-group">
+            <label for="meas1">Measurement 1:</label>
+            <div class="form-row" id="meas1">
+              <input type="integer" class="form-control col-4" formControlName="fromQty" min="0" required>
+              <select class="form-control col-8" formControlName="fromName" required>
+                <option value="" disabled>-- Select --</option>
+                <option *ngFor="let measurement of measurements" [ngValue]="measurement">{{ measurement.name }}</option>
+              </select>
+            </div>
             <div *ngIf="fromQty.invalid && (fromQty.touched || fromQty.dirty)" class="alert alert-danger">
               <div *ngIf="fromQty.errors.required">
                 A quantity for Measurement 1 is required.
@@ -32,30 +35,34 @@
 
           <p>-- Is equivalent to --</p>
 
-          <label>
-            Measurement 2:
-            <input type="integer" formControlName="toQty" min="0" required>
-            <select formControlName="toName" required>
-              <option value="" disabled>-- Select --</option>
-              <option *ngFor="let measurement of measurements" [ngValue]="measurement">{{ measurement.name }}</option>
-            </select>
-          </label>
-          <div *ngIf="toQty.invalid && (toQty.touched || toQty.dirty)" class="alert alert-danger">
-            <div *ngIf="toQty.errors.required">
-              A quantity for Measurement 2 is required.
+          <div class="form-group">
+            <label for="meas2">Measurement 2:</label>
+            <div class="form-row" id="meas2">
+              <input type="integer" class="form-control col-4" formControlName="toQty" min="0" required>
+              <select class="form-control col-8" formControlName="toName" required>
+                <option value="" disabled>-- Select --</option>
+                <option *ngFor="let measurement of measurements" [ngValue]="measurement">{{ measurement.name }}</option>
+              </select>
             </div>
-            <div *ngIf="toQty.errors.min">
-              Quantity for Measurement 2 cannot be less than 0.
+            <div *ngIf="toQty.invalid && (toQty.touched || toQty.dirty)" class="alert alert-danger">
+              <div *ngIf="toQty.errors.required">
+                A quantity for Measurement 2 is required.
+              </div>
+              <div *ngIf="toQty.errors.min">
+                Quantity for Measurement 2 cannot be less than 0.
+              </div>
+            </div>
+            <div *ngIf="toName.invalid && (toName.touched || toName.dirty)" class="alert alert-danger">
+              <div *ngIf="toName.errors.required">
+                A measurement must be selected for Measurement 1.
+              </div>
             </div>
           </div>
-          <div *ngIf="toName.invalid && (toName.touched || toName.dirty)" class="alert alert-danger">
-            <div *ngIf="toName.errors.required">
-              A measurement must be selected for Measurement 1.
-            </div>
+          <div class="form-row pb-3">
+            <button type="submit" class="form-control col-md order-md-last btn btn-success" [disabled]="!conversionForm.valid">Save</button>
+            <span class="col-md"></span>
+            <button type="button" class="form-control col-md order-md-first btn btn-danger" (click)="close()">Cancel</button>
           </div>
-
-          <button type="submit" [disabled]="!conversionForm.valid">Save</button>
-          <button type="button" (click)="close()">Cancel</button>
           <div *ngIf="showSaveError" class="alert alert-danger">
             Error saving. Message:<br />{{ saveError.message }}
           </div>
@@ -63,6 +70,8 @@
       </div>
     </div>
   </div>
+
+  <hr />
 
   <table *ngIf="conversions.length > 0" class="table table-striped shadow">
     <thead class="thead-dark">

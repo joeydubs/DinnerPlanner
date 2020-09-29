@@ -28,10 +28,10 @@
             <input type="text" class="form-control" formControlName="abbreviation" id="abbreviation" placeholder="Tsp">
           </div>
           <div class="form-row pb-3">
-            <button type="submit" class="form-control col-md order-md-last btn-success"
+            <button type="submit" class="form-control col-md order-md-last btn btn-success"
               [disabled]="!measurementForm.valid">Save</button>
             <span class="col-md"></span>
-            <button type="button" class="form-control col-md order-md-first btn-danger"
+            <button type="button" class="form-control col-md order-md-first btn btn-danger"
               (click)="close()">Cancel</button>
           </div>
           <div *ngIf="showSaveError" class="alert alert-danger text-break">

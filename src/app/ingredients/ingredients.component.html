@@ -35,10 +35,10 @@
             </div>
           </div>
           <div class="form-row pb-3">
-            <button type='submit' class="form-control col-md order-md-last btn-success"
+            <button type='submit' class="form-control col-md order-md-last btn btn-success"
               [disabled]="!ingredientForm.valid">Save</button>
             <span class="col-md"></span>
-            <button type='button' class="form-control col-md order-md-first btn-danger"
+            <button type='button' class="form-control col-md order-md-first btn btn-danger"
               (click)='cancel()'>Cancel</button>
           </div>
           <div *ngIf="showSaveError" class="alert alert-danger text-break">

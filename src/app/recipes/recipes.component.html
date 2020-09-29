@@ -1,95 +1,111 @@
-<h2>Manage Recipes</h2>
+<div class="container-fluid">
 
-<button (click)="newRecipe()">Add Recipe</button>
-<form *ngIf="showRecipeForm" [formGroup]="recipeForm" (ngSubmit)="save()">
-  <label>
-    Recipe Name:
-    <input type="text" formControlName="name" required>
-  </label>
-  <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
-    <div *ngIf="name.errors.required">
-      Recipe name is required.
-    </div>
-  </div>
-  <br />
-  <div formArrayName="ingredientList">
-    <label>
-      Ingredients:
-      <div *ngFor="let _ of ingredientList.controls; let i=index">
-        <div [formGroupName]="i" >
-          <input type="number" formControlName="quantity" min="0" required>
-          <select formControlName="measurement" required>
-            <option value="" disabled>-- Select --</option>
-            <option *ngFor="let measurement of measurements" [ngValue]="measurement">{{ measurement.name }}</option>
-          </select>
-          <select formControlName="ingredient" required>
-            <option value="" disabled>-- Select --</option>
-            <option *ngFor="let ingredient of ingredients" [ngValue]="ingredient">{{ ingredient.name }}</option>
-          </select>
-          <div *ngIf="quantity(i).invalid && (quantity(i).dirty || quantity(i).touched)" class="alert alert-danger">
-            <div *ngIf="quantity(i).errors.required">
-              Ingredient quantity is required.
-            </div>
-            <div *ngIf="quantity(i).errors.min">
-              Ingredient quantity cannot be less than 0.
+  <h2>Manage Recipes</h2>
+
+  <button class="btn btn-info" (click)="isCollapsed = !isCollapsed">Add Recipe</button>
+
+  <div class="container-fluid">
+    <div class="row" [ngbCollapse]="isCollapsed">
+      <div class="col-md-6 col-lg-4 bg-light pt-2 shadow rounded">
+        <h3 class="text-info">New Recipe</h3>
+
+        <form [formGroup]="recipeForm" (ngSubmit)="save()">
+          <div class="form-group">
+            <label>Recipe Name:</label>
+            <input type="text" class="form-control" formControlName="name" required>
+            <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
+              <div *ngIf="name.errors.required">
+                Recipe name is required.
+              </div>
             </div>
           </div>
-          <div *ngIf="measurement(i).invalid && (measurement(i).dirty || measurement(i).touched)"
-            class="alert alert-danger">
-            <div *ngIf="measurement(i).errors.required">
-              Ingredient measurement is required.
+          <div class="form-group">
+            <div formArrayName="ingredientList">
+              <label>Ingredients:</label>
+              <div *ngFor="let _ of ingredientList.controls; let i=index">
+                <div [formGroupName]="i">
+                  <div class="form-row">
+                    <input type="number" class="form-control col-2" formControlName="quantity" min="0" required>
+                    <select class="form-control col-3" formControlName="measurement" required>
+                      <option value="" disabled>-- Select --</option>
+                      <option *ngFor="let measurement of measurements" [ngValue]="measurement">{{ measurement.name }}
+                      </option>
+                    </select>
+                    <select class="form-control col-5" formControlName="ingredient" required>
+                      <option value="" disabled>-- Select --</option>
+                      <option *ngFor="let ingredient of ingredients" [ngValue]="ingredient">{{ ingredient.name }}
+                      </option>
+                    </select>
+                    <button type="button" class="form-control col-2 btn btn-danger"
+                      (click)="removeIngredient(i)">Remove</button>
+                  </div>
+                  <div *ngIf="quantity(i).invalid && (quantity(i).dirty || quantity(i).touched)"
+                    class="alert alert-danger">
+                    <div *ngIf="quantity(i).errors.required">
+                      Ingredient quantity is required.
+                    </div>
+                    <div *ngIf="quantity(i).errors.min">
+                      Ingredient quantity cannot be less than 0.
+                    </div>
+                  </div>
+                  <div *ngIf="measurement(i).invalid && (measurement(i).dirty || measurement(i).touched)"
+                    class="alert alert-danger">
+                    <div *ngIf="measurement(i).errors.required">
+                      Ingredient measurement is required.
+                    </div>
+                  </div>
+                  <div *ngIf="ingredient(i).invalid && (ingredient(i).dirty || ingredient(i).touched)"
+                    class="alert alert-danger">
+                    <div *ngIf="ingredient(i).errors.required">
+                      Ingredient is required.
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button type="button" class="form-control btn btn-info" (click)="addIngredient()">Add ingredient</button>
             </div>
           </div>
-          <div *ngIf="ingredient(i).invalid && (ingredient(i).dirty || ingredient(i).touched)"
-            class="alert alert-danger">
-            <div *ngIf="ingredient(i).errors.required">
-              Ingredient is required.
+          <br />
+          <label>
+            Directions:
+            <br />
+            <textarea formControlName="directions" maxlength="2000" cols="50" rows="5" required></textarea>
+          </label>
+          <div *ngIf="directions.invalid && (directions.dirty || directions.touched)" class="alert alert-danger">
+            <div *ngIf="directions.errors.required">
+              Recipe directions are required.
             </div>
           </div>
-          <button type="button" (click)="removeIngredient(i)">Remove</button>
-        </div>
+          <br />
+          <button type="submit" [disabled]="!recipeForm.valid">Save</button>
+          <button type="button" (click)="close()">Cancel</button>
+          <button type="button" (click)="clearForm()">Clear</button>
+          <div *ngIf="showSaveError" class="alert alert-danger">
+            Error saving. Message:<br />{{ saveError.message }}
+          </div>
+        </form>
       </div>
-    </label>
-    <br />
-    <button type="button" (click)="addIngredient()">Add ingredient</button>
-  </div>
-  <br />
-  <label>
-    Directions:
-    <br />
-    <textarea formControlName="directions" maxlength="2000" cols="50" rows="5" required></textarea>
-  </label>
-  <div *ngIf="directions.invalid && (directions.dirty || directions.touched)" class="alert alert-danger">
-    <div *ngIf="directions.errors.required">
-      Recipe directions are required.
     </div>
   </div>
-  <br />
-  <button type="submit" [disabled]="!recipeForm.valid">Save</button>
-  <button type="button" (click)="close()">Cancel</button>
-  <button type="button" (click)="clearForm()">Clear</button>
-  <div *ngIf="showSaveError" class="alert alert-danger">
-    Error saving. Message:<br />{{ saveError.message }}
-  </div>
-</form>
 
-<table *ngIf="recipes.length > 0" class="table table-striped">
-  <thead class="thead-dark">
-    <tr>
-      <th>ID</th>
-      <th>Recipe</th>
-      <th>Ingredients</th>
-      <th>Directions</th>
-      <th>Can Make</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let recipe of recipes">
-      <td>{{ recipe.id }}</td>
-      <td>{{ recipe.name }}</td>
-      <td>{{ printRecipe(recipe) }}</td>
-      <td>{{ recipe.directions }}</td>
-      <td>{{ recipe.canMake }}</td>
-    </tr>
-  </tbody>
-</table>
+  <table *ngIf="recipes.length > 0" class="table table-striped shadow">
+    <thead class="thead-dark">
+      <tr>
+        <th>ID</th>
+        <th>Recipe</th>
+        <th>Ingredients</th>
+        <th>Directions</th>
+        <th>Can Make</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let recipe of recipes">
+        <td>{{ recipe.id }}</td>
+        <td>{{ recipe.name }}</td>
+        <td>{{ printRecipe(recipe) }}</td>
+        <td>{{ recipe.directions }}</td>
+        <td>{{ recipe.canMake }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
