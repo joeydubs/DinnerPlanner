@@ -11,6 +11,7 @@ import { IngredientsComponent } from './ingredients/ingredients.component';
 import { MeasurementsComponent } from './measurements/measurements.component';
 import { ConversionsComponent } from './conversions/conversions.component';
 import { HttpClientModule } from '@angular/common/http';
+import { MenuComponent } from './menu/menu.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { HttpClientModule } from '@angular/common/http';
     RecipesComponent,
     IngredientsComponent,
     MeasurementsComponent,
-    ConversionsComponent
+    ConversionsComponent,
+    MenuComponent
   ],
   imports: [
     BrowserModule,

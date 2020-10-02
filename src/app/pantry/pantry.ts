@@ -1,5 +1,6 @@
 import { IIngredient } from '../ingredients/ingredients'
-export interface IPantry {
+
+export interface IPantryItem {
   ingredient: IIngredient,
   qoh: number
 }

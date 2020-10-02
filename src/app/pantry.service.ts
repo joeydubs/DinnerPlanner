@@ -6,6 +6,7 @@ import { IMeasurement } from './measurements/measurements';
 import { IConversion } from './conversions/conversions';
 import { IIngredient } from './ingredients/ingredients';
 import { IRecipe, IRecipeIngredient } from './recipes/recipes';
+import { IPantryItem } from './pantry/pantry';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +29,10 @@ export class PantryService {
 
   getAllRecipes(): Observable<IRecipe[]> {
     return this.http.get<IRecipe[]>("https://ngpantry.duckdns.org/api/getAllRecipes");
+  }
+
+  getAllPantryItems(): Observable<IPantryItem[]> {
+    return this.http.get<IPantryItem[]>("https://ngpantry.duckdns.org/api/getAllPantryItems");
   }
 
   getRecipeIngredients(recipeId: number): Observable<IRecipeIngredient[]> {

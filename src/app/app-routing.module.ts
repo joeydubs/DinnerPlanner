@@ -1,13 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+
 import { IngredientsComponent } from './ingredients/ingredients.component';
 import { PantryComponent } from './pantry/pantry.component';
 import { RecipesComponent } from './recipes/recipes.component';
 import { MeasurementsComponent } from './measurements/measurements.component';
 import { ConversionsComponent } from './conversions/conversions.component';
+import { MenuComponent } from './menu/menu.component';
 
 const routes: Routes = [
   { path: 'pantry', component: PantryComponent },
+  { path: 'menu', component: MenuComponent },
   { path: 'manageRecipes', component: RecipesComponent },
   { path: 'manageIngredients', component: IngredientsComponent },
   { path: 'manageMeasurements', component: MeasurementsComponent },

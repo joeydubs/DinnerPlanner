@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-md bg-dark navbar-dark">
-  <a class="navbar-brand" href="#">My Pantry</a>
+  <a class="navbar-brand" href="#">{{ appName }}</a>
 
   <button type="button" class="navbar-toggler" (click)="isMenuCollapsed = !isMenuCollapsed">
     <span class="fas fa-bars"></span>
@@ -21,7 +21,7 @@
         </div>
       </li>
       <li><a class="nav-link" routerLink="/pantry" (click)="isMenuCollapsed = true">Pantry</a></li>
-      <li><a class="nav-link" routerLink='/myRecipes' (click)="isMenuCollapsed = true">My Recipes</a></li>
+      <li><a class="nav-link" routerLink='/menu' (click)="isMenuCollapsed = true">Menu</a></li>
     </ul>
   </div>
 </nav>

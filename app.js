@@ -124,6 +124,42 @@ app.get('/getAllRecipes', async function (req, res) {
   res.send(JSON.stringify(recipes));
 })
 
+app.get('/getAllPantryItems', async function (req, res) {
+  res.setHeader("ContentType", "application/json");
+
+  let pantryItems = await pool.query(
+    `
+    SELECT qoh, i.id AS ingredientId, i.name AS ingredientName,
+      m.id AS defaultMeasId, m.name AS measName, m.abbr AS measAbbr
+    FROM pantry AS p
+    INNER JOIN ingredients AS i ON p.ingredientId = i.id
+    INNER JOIN measurements AS m ON i.defaultMeasId = m.id
+    `
+  );
+
+  let pantry = [];
+
+  for (let item of pantryItems) {
+    let pantryItem = {
+      ingredient: {
+        id: item.ingredientId,
+        name: item.ingredientName,
+        defaultMeasurement: {
+          id: item.defaultMeasId,
+          name: item.measName,
+          abbr: item.measAbbr
+        }
+      },
+      qoh: item.qoh
+    }
+
+    pantry.push(pantryItem);
+  }
+
+  res.status(200);
+  res.send(pantry);
+})
+
 app.get('/getRecipeIngredients', async function (req, res) {
   res.setHeader("ContentType", "application/json");
 
