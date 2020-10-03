@@ -1,4 +1,5 @@
 <div class="container-fluid">
+
   <h2>My Pantry</h2>
 
   <button class="btn btn-info" *ngIf="isCollapsed" (click)="isCollapsed = !isCollapsed">Add to Pantry</button>
@@ -8,12 +9,82 @@
       <div class="col-md-6 col-lg-4 bg-light pt-2 rounded shadow">
         <h3 class="text-info">Add to Pantry</h3>
 
-        
+        <form [formGroup]="pantryForm" (ngSubmit)="save()">
+          <div class="form-group">
+            <label for="ingredient">Ingredient</label>
+            <select class="form-control" id="ingredient" formControlName="ingredient">
+              <option value="" disabled>-- Select --</option>
+              <option *ngFor="let ingredient of ingredients" [ngValue]="ingredient">{{ ingredient.name }}</option>
+            </select>
+            <div *ngIf="ingredient.invalid && (ingredient.touched || ingredient.dirty)" class="alert alert-danger">
+              <div *ngIf="ingredient.errors.required">
+                Ingredient is required.
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="qty">Quantity</label>
+                <input type="integer" class="form-control" id="qty" formControlName="quantity" min="0">
+                <div *ngIf="quantity.invalid && (quantity.touched || ingredient.dirty)" class="alert alert-danger">
+                  <div *ngIf="quantity.errors.required">
+                    Quantity is required.
+                  </div>
+                  <div *ngIf="quantity.errors.min">
+                    Quantity cannot be less than 0.
+                  </div>
+                </div>
+              </div>
+              <div class="form-Group col-md-6">
+                <label for="measurement">Measurement</label>
+                <select class="form-control" id="measurement" formControlName="measurement">
+                  <option value="" disabled>-- Select --</option>
+                  <option *ngFor="let measurement of measurements" [ngValue]="measurement">{{ measurement.name }}
+                  </option>
+                </select>
+                <div *ngIf="measurement.invalid && (measurement.touched || measurement.dirty)"
+                  class="alert alert-danger">
+                  <div *ngIf="measurement.errors.required">
+                    Measurement is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md order-md-last">
+              <button type="submit" class="form-control btn btn-success" [disabled]="!pantryForm.valid">Save</button>
+            </div>
+            <span class="col-md"></span>
+            <div class="form-group col-md order-md-first">
+              <button class="form-control  btn btn-danger" (click)="close()">Cancel</button>
+            </div>
+          </div>
+          <div *ngIf="showSaveError" class="alert alert-danger">
+            Error saving. Message:<br />{{ saveError.message }}
+          </div>
+        </form>
       </div>
     </div>
   </div>
 
   <hr />
 
-
+  <table *ngIf="pantry.length > 0" class="table table-striped shadow">
+    <thead class="thead-dark">
+      <tr>
+        <th>Ingredient</th>
+        <th>Measurement</th>
+        <th>Quantity on Hand</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of pantry">
+        <td>{{ item.ingredient.name }}</td>
+        <td>{{ item.ingredient.defaultMeasurement.name }}</td>
+        <td>{{ item.qoh }}</td>
+      </tr>
+    </tbody>
+  </table>
 </div>
